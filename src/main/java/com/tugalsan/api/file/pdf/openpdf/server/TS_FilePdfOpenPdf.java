@@ -4,6 +4,7 @@ import com.tugalsan.api.log.server.TS_Log;
 import java.nio.file.Path;
 import com.lowagie.text.Document;
 
+//https://github.com/LibrePDF/OpenPDF/wiki/Tutorial
 @Deprecated //TODO Migration from TS_FilePdfItext to here
 public class TS_FilePdfOpenPdf {
 

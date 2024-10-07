@@ -4,6 +4,7 @@ module com.tugalsan.api.file.pdf.openpdf {
     requires com.tugalsan.api.log;
     requires com.tugalsan.api.function;
     requires com.tugalsan.api.union;
+    requires com.tugalsan.api.charset;
     requires com.tugalsan.api.unsafe;
     exports com.tugalsan.api.file.pdf.openpdf.server;
 }
