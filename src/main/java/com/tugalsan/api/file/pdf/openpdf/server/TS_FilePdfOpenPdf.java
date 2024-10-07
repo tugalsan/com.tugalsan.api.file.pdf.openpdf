@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import com.lowagie.text.Document;
 
 //https://github.com/LibrePDF/OpenPDF/wiki/Tutorial
+//https://web.archive.org/web/20090703162811/http://itextdocs.lowagie.com/tutorial/
 @Deprecated //TODO Migration from TS_FilePdfItext to here
 public class TS_FilePdfOpenPdf {
 
