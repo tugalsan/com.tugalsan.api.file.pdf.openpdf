@@ -6,7 +6,16 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-        
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>com.tugalsan.api.file.common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     
     <build>

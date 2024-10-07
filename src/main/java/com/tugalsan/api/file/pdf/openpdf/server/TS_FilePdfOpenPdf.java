@@ -1,34 +1,33 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.tugalsan.api.function.client.TGS_FuncEffectivelyFinal;
 import com.tugalsan.api.log.server.TS_Log;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
 import java.nio.file.Path;
+import com.lowagie.text.Document;
 
 @Deprecated //TODO Migration from TS_FilePdfItext to here
-public class TS_FilePdfBox3 {
+public class TS_FilePdfOpenPdf {
 
-    final private static TS_Log d = TS_Log.of(TS_FilePdfBox3.class);
+    final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdf.class);
 
     public Path getFile() {
         return file;
     }
     private final Path file;
 
-    public PDDocument getWriter() {
+    public Document getWriter() {
         return document;
     }
 
-    public PDDocument getDocument() {
+    public Document getDocument() {
         return document;
     }
-    private PDDocument document;
+    private Document document;
 
-    public TS_FilePdfBox3(Path file) {
+    public TS_FilePdfOpenPdf(Path file) {
         this.file = file;
     }
 
-    public void createNewPage(int pageSizeAX, boolean landscape, Integer marginLeft0, Integer marginRight0, Integer marginTop0, Integer marginBottom0) {        
+    public void createNewPage(int pageSizeAX, boolean landscape, Integer marginLeft0, Integer marginRight0, Integer marginTop0, Integer marginBottom0) {
     }
-    
+
 }
