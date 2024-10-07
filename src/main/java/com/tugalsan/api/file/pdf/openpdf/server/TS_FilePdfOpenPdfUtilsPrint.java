@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 /**
  * This class enables you to call an executable that will show a PDF file.
  */
-public class Executable {
+public class TS_FilePdfOpenPdfUtilsPrint {
 
     /**
      * The path to Acrobat Reader.

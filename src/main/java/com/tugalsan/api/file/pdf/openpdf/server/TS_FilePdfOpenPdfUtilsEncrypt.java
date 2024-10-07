@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EncryptPdf {
+public class TS_FilePdfOpenPdfUtilsEncrypt {
 
     private final static int INPUT_FILE = 0;
     private final static int OUTPUT_FILE = 1;
