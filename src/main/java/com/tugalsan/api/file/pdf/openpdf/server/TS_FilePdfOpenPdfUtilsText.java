@@ -22,7 +22,7 @@ public class TS_FilePdfOpenPdfUtilsText {
 
     public static TGS_UnionExcuseVoid test(Path dstPdf) {
         return TGS_UnSafe.call(() -> {
-            TS_FilePdfOpenPdfUtilsDocument.run_new_than_save(doc -> {
+            TS_FilePdfOpenPdfUtilsDocument.run_doc(doc -> {
                 TGS_UnSafe.run(() -> {
                     var pdfWriter = PdfWriter.getInstance(doc, new FileOutputStream(dstPdf.toFile()));
                     doc.open();
