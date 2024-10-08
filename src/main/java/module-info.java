@@ -8,5 +8,6 @@ module com.tugalsan.api.file.pdf.openpdf {
     requires com.tugalsan.api.union;
     requires com.tugalsan.api.charset;
     requires com.tugalsan.api.unsafe;
+    requires com.tugalsan.api.string;
     exports com.tugalsan.api.file.pdf.openpdf.server;
 }
