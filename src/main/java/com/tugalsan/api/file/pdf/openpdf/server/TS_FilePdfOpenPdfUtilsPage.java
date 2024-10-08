@@ -8,6 +8,14 @@ import java.nio.file.Path;
 
 public class TS_FilePdfOpenPdfUtilsPage {
 
+    public static float getPageWidth(PdfReader reader, int pageIdx) {
+        return reader.getCropBox(pageIdx).getWidth();
+    }
+
+    public static float getPageHeight(PdfReader reader, int pageIdx) {
+        return reader.getCropBox(pageIdx).getHeight();
+    }
+
     public static PdfDictionary getPage(PdfReader reader, int pageIdx) {
         return reader.getPageN(pageIdx);
     }

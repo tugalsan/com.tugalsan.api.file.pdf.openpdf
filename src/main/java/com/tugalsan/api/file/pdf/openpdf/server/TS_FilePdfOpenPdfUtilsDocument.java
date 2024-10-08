@@ -6,6 +6,7 @@ import com.lowagie.text.pdf.PdfName;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfString;
 import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.RandomAccessFileOrArray;
 import com.tugalsan.api.function.client.TGS_Func_In1;
 import com.tugalsan.api.function.client.TGS_Func_In2;
 import com.tugalsan.api.function.client.TGS_Func_OutTyped_In1;
@@ -13,8 +14,6 @@ import com.tugalsan.api.function.client.TGS_Func_OutTyped_In2;
 import com.tugalsan.api.union.client.TGS_UnionExcuse;
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
 import com.tugalsan.api.unsafe.client.TGS_UnSafe;
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -101,20 +100,32 @@ public class TS_FilePdfOpenPdfUtilsDocument {
     }
 
     public static TGS_UnionExcuseVoid run_doc_with_reader(Path srcPdf, TGS_Func_In2<Document, PdfReader> doc_reader) {
+        return run_doc_with_reader(srcPdf, null, doc_reader);
+    }
+
+    public static <T> TGS_UnionExcuse<T> call_doc_with_reader(Path srcPdf, TGS_Func_OutTyped_In2<T, Document, PdfReader> doc_reader) {
+        return call_doc_with_reader(srcPdf, null, doc_reader);
+    }
+
+    public static TGS_UnionExcuseVoid run_doc_with_reader(Path srcPdf, byte[] password, TGS_Func_In2<Document, PdfReader> doc_reader) {
         return TGS_UnSafe.call(() -> {
             try (var _doc = new Document()) {
-                var reader = new PdfReader(new BufferedInputStream(Files.newInputStream(srcPdf)));
-                doc_reader.run(_doc, reader);
-                return TGS_UnionExcuseVoid.ofVoid();
+                try (var raf = new RandomAccessFileOrArray(Files.newInputStream(srcPdf))) {
+                    var reader = new PdfReader(raf, password);
+                    doc_reader.run(_doc, reader);
+                    return TGS_UnionExcuseVoid.ofVoid();
+                }
             }
         }, e -> TGS_UnionExcuseVoid.ofExcuse(e));
     }
 
-    public static <T> TGS_UnionExcuse<T> call_doc_with_reader(Path srcPdf, TGS_Func_OutTyped_In2<T, Document, PdfReader> doc_reader) {
+    public static <T> TGS_UnionExcuse<T> call_doc_with_reader(Path srcPdf, byte[] password, TGS_Func_OutTyped_In2<T, Document, PdfReader> doc_reader) {
         return TGS_UnSafe.call(() -> {
             try (var _doc = new Document()) {
-                var reader = new PdfReader(new BufferedInputStream(Files.newInputStream(srcPdf)));
-                return TGS_UnionExcuse.of(doc_reader.call(_doc, reader));
+                try (var raf = new RandomAccessFileOrArray(Files.newInputStream(srcPdf))) {
+                    var reader = new PdfReader(raf, password);
+                    return TGS_UnionExcuse.of(doc_reader.call(_doc, reader));
+                }
             }
         }, e -> TGS_UnionExcuse.ofExcuse(e));
     }
