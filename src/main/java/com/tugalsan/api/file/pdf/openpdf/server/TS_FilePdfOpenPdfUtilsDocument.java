@@ -20,7 +20,7 @@ import java.nio.file.Path;
 
 public class TS_FilePdfOpenPdfUtilsDocument {
 
-    public static <T> TGS_UnionExcuse<T> call_doc_with_copy(Path dstPdf, TGS_Func_OutTyped_In2<T, Document, PdfCopy> doc_copy) {
+    public static TGS_UnionExcuseVoid run_doc_with_copy(Path dstPdf, TGS_Func_In2<Document, PdfCopy> doc_copy) {
         return TGS_UnSafe.call(() -> {
             try (var _doc = new Document()) {
                 var copy = new PdfCopy(_doc, new BufferedOutputStream(Files.newOutputStream(dstPdf)));
@@ -29,9 +29,10 @@ public class TS_FilePdfOpenPdfUtilsDocument {
                 copy.setCompressionLevel(PdfStream.DEFAULT_COMPRESSION);
                 _doc.open();
                 copy.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
-                return TGS_UnionExcuse.of(doc_copy.call(_doc, copy));
+                doc_copy.call(_doc, copy);
+                return TGS_UnionExcuseVoid.ofVoid();
             }
-        }, e -> TGS_UnionExcuse.ofExcuse(e));
+        }, e -> TGS_UnionExcuseVoid.ofExcuse(e));
     }
 
     public static TGS_UnionExcuseVoid run_doc_with_writer(PageInfo pageInfo, Path dstPdf, TGS_Func_In2<Document, PdfWriter> doc_writer) {
