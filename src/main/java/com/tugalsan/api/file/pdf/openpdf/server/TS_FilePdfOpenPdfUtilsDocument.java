@@ -20,7 +20,7 @@ import java.nio.file.Path;
 
 public class TS_FilePdfOpenPdfUtilsDocument {
 
-    public static <T> TGS_UnionExcuse<T> call_doc_with_copy(Path dstPdf, TGS_Func_OutTyped_In2<T, Document, PdfWriter> doc_copy) {
+    public static <T> TGS_UnionExcuse<T> call_doc_with_copy(Path dstPdf, TGS_Func_OutTyped_In2<T, Document, PdfCopy> doc_copy) {
         return TGS_UnSafe.call(() -> {
             try (var _doc = new Document()) {
                 var copy = new PdfCopy(_doc, new BufferedOutputStream(Files.newOutputStream(dstPdf)));

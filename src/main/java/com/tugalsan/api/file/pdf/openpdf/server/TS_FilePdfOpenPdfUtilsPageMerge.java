@@ -1,6 +1,5 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.pdf.BadPdfFormatException;
 import com.lowagie.text.pdf.SimpleBookmark;
 import com.tugalsan.api.thread.server.sync.TS_ThreadSyncLst;
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
@@ -32,11 +31,7 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
                         pageIdxOffset.set(pageIdxOffset.get() + numberOfPages);
                         for (var i = 1; i <= numberOfPages; i++) {
                             var page = copy.getImportedPage(srcReader, i);
-                            try {
-                                copy.addPage(page);
-                            } catch (IOException | BadPdfFormatException ex) {
-                                TGS_UnSafe.thrw(ex);
-                            }
+                            copy.addPage(page);
                         }
                         try {
                             copy.freeReader(srcReader);
