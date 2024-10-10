@@ -16,7 +16,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
 
     public static TGS_UnionExcuseVoid test(Path dstPdf, Path... srcImages) {
         return TGS_UnSafe.call(() -> {
-            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(dstPdf, (doc, writer) -> {
+            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(TS_FilePdfOpenPdfUtilsPage.PAGE_INFO_A4_PORT_0_0_0_0, dstPdf, (doc, writer) -> {
                 TGS_UnSafe.run(() -> {
                     for (var srcImage : srcImages) {
                         var pathImageStr = srcImage.toAbsolutePath().toString();

@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class TS_FilePdfOpenPdfUtilsReadText {
+public class TS_FilePdfOpenPdfUtilsTextExtract {
 
     public static void main(String[] args) {
 

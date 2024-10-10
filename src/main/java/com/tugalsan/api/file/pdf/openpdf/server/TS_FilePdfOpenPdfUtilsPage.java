@@ -1,5 +1,7 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfDictionary;
 import com.lowagie.text.pdf.PdfReader;
@@ -7,6 +9,39 @@ import com.tugalsan.api.union.client.TGS_UnionExcuse;
 import java.nio.file.Path;
 
 public class TS_FilePdfOpenPdfUtilsPage {
+
+    public static record PageInfo(int aX, boolean landscape, float marginLeft, float marginRight, float marginTop, float marginBottom) {
+
+        public Rectangle toRectangle() {
+            if (aX <= 0) {
+                return landscape ? PageSize.A0.rotate() : PageSize.A0;
+            }
+            if (aX == 1) {
+                return landscape ? PageSize.A1.rotate() : PageSize.A1;
+            }
+            if (aX == 2) {
+                return landscape ? PageSize.A2.rotate() : PageSize.A2;
+            }
+            if (aX == 3) {
+                return landscape ? PageSize.A3.rotate() : PageSize.A3;
+            }
+            if (aX == 4) {
+                return landscape ? PageSize.A4.rotate() : PageSize.A4;
+            }
+            if (aX == 5) {
+                return landscape ? PageSize.A5.rotate() : PageSize.A5;
+            }
+            return landscape ? PageSize.A6.rotate() : PageSize.A6;
+        }
+    }
+    final public static TS_FilePdfOpenPdfUtilsPage.PageInfo PAGE_INFO_A4_PORT_0_0_0_0 = new TS_FilePdfOpenPdfUtilsPage.PageInfo(4, false, 0, 0, 0, 0);
+    final public static TS_FilePdfOpenPdfUtilsPage.PageInfo PAGE_INFO_A4_LAND_0_0_0_0 = new TS_FilePdfOpenPdfUtilsPage.PageInfo(4, false, 0, 0, 0, 0);
+
+    public static boolean addPage(Document doc, PageInfo pageInfo) {
+        doc.setPageSize(pageInfo.toRectangle());
+        doc.setMargins(pageInfo.marginLeft, pageInfo.marginRight, pageInfo.marginTop, pageInfo.marginBottom);
+        return doc.newPage();
+    }
 
     public static float getPageWidth(PdfReader reader, int pageIdx) {
         return reader.getCropBox(pageIdx).getWidth();

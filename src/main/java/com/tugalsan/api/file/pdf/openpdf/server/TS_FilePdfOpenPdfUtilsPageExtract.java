@@ -2,13 +2,13 @@ package com.tugalsan.api.file.pdf.openpdf.server;
 
 import java.nio.file.Path;
 
-public class TS_FilePdfOpenPdfUtilsExtract {
+public class TS_FilePdfOpenPdfUtilsPageExtract {
 
     public static void extract(Path srcFile, Path destFile1, Path destFile2, int newFile_PageIndex_StartOffset) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(srcFile, (srcDoc, srcReader) -> {
             var srcPageCount = TS_FilePdfOpenPdfUtilsPage.count(srcReader);
-            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(destFile1, (dstDoc1, dstWriter1) -> {
-                TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(destFile2, (dstDoc2, dstWriter2) -> {
+            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(TS_FilePdfOpenPdfUtilsPage.PAGE_INFO_A4_PORT_0_0_0_0, destFile1, (dstDoc1, dstWriter1) -> {
+                TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(TS_FilePdfOpenPdfUtilsPage.PAGE_INFO_A4_PORT_0_0_0_0, destFile2, (dstDoc2, dstWriter2) -> {
                     var dstContentByte1 = dstWriter1.getDirectContent();
                     var dstContentByte2 = dstWriter2.getDirectContent();
                     int i = 0;

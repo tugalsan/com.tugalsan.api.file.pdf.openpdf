@@ -11,7 +11,7 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
 
-public class TS_FilePdfOpenPdfUtilsHandout {
+public class TS_FilePdfOpenPdfUtilsPageHandout {
 
     public static void main(String[] args) {
         if (args.length != 3) {
