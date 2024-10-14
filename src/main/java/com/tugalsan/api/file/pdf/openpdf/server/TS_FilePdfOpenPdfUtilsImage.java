@@ -10,11 +10,11 @@ import java.util.List;
 
 public class TS_FilePdfOpenPdfUtilsImage {
 
-    public static TGS_UnionExcuseVoid test(Path dstPdf, List<Path> srcImages) {
-        return test(dstPdf, srcImages.toArray(Path[]::new));
+    public static TGS_UnionExcuseVoid toPdf(Path dstPdf, List<Path> srcImages) {
+        return toPdf(dstPdf, srcImages.toArray(Path[]::new));
     }
 
-    public static TGS_UnionExcuseVoid test(Path dstPdf, Path... srcImages) {
+    public static TGS_UnionExcuseVoid toPdf(Path dstPdf, Path... srcImages) {
         return TGS_UnSafe.call(() -> {
             TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(TS_FilePdfOpenPdfUtilsPage.PAGE_INFO_A4_PORT_0_0_0_0, dstPdf, (doc, writer) -> {
                 TGS_UnSafe.run(() -> {

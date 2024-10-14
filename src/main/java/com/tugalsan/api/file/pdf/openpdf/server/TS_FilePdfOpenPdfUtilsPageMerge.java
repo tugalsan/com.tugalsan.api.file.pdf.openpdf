@@ -1,6 +1,5 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfCopy;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.SimpleBookmark;
