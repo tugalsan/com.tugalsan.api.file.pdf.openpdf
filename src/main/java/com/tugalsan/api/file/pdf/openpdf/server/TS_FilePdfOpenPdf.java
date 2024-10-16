@@ -4,6 +4,7 @@ import com.tugalsan.api.log.server.TS_Log;
 import java.nio.file.Path;
 import com.tugalsan.api.file.common.server.TS_FileCommonAbstract;
 import com.tugalsan.api.file.common.server.TS_FileCommonConfig;
+import com.tugalsan.api.file.server.TS_FileUtils;
 import com.tugalsan.api.function.client.TGS_Func_In1;
 import com.tugalsan.api.url.client.TGS_Url;
 import java.awt.image.BufferedImage;
@@ -53,6 +54,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
     @Override
     public boolean saveFile(String errorSource) {
         d.ce("saveFile", "todo");
+        TS_FileUtils.createFileIfNotExists(localFile);
         return true;
     }
 
