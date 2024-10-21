@@ -24,7 +24,6 @@ import java.util.stream.IntStream;
 
 //https://github.com/LibrePDF/OpenPDF/wiki/Tutorial
 //https://web.archive.org/web/20090703162811/http://itextdocs.lowagie.com/tutorial/
-@Deprecated //TODO Migration from FilePdfItext to here. Cooking...
 public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
 
     final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdf.class);
