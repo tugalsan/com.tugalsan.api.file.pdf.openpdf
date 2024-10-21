@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 @Deprecated //TODO Migration from FilePdfItext to here. Cooking...
 public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
 
-    final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdf.class);
+    final private static TS_Log d = TS_Log.of(true, TS_FilePdfOpenPdf.class);
     public TS_FilePdfOpenPdfUtils pdf;
     public PdfPTable pdfTable = null;
     public PdfPCell pdfCell = null;
