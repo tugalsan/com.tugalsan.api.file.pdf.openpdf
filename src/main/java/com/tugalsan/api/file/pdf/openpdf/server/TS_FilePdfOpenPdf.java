@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 //https://web.archive.org/web/20090703162811/http://itextdocs.lowagie.com/tutorial/
 public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
 
-    final private static TS_Log d = TS_Log.of(true, TS_FilePdfOpenPdf.class);
+    final private static TS_Log d = TS_Log.of(false, TS_FilePdfOpenPdf.class);
     public TS_FilePdfOpenPdfUtils pdf;
     public PdfPTable pdfTable = null;
     public PdfPCell pdfCell = null;
