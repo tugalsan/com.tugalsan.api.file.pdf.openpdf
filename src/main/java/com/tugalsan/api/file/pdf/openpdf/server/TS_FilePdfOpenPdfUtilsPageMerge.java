@@ -3,6 +3,7 @@ package com.tugalsan.api.file.pdf.openpdf.server;
 import com.lowagie.text.pdf.PdfCopy;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.SimpleBookmark;
+import static com.tugalsan.api.file.pdf.openpdf.server.TS_FilePdfOpenPdfUtilsPage.count;
 import com.tugalsan.api.thread.server.sync.TS_ThreadSyncLst;
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
 import com.tugalsan.api.unsafe.client.TGS_UnSafe;
@@ -10,6 +11,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsPageMerge {
 
@@ -50,6 +52,21 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
                 copy.addPage(page);
             }
             copy.freeReader(srcReader);
+        });
+    }
+
+    @Deprecated//OLD WAY
+    public static void merge_old(List<Path> pdfSrcFiles, Path pdfDstFile) {
+        TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(pdfDstFile, (docDst, pdfCopy) -> {
+            pdfSrcFiles.stream().forEachOrdered(srcFile -> {
+                TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(srcFile, (srcDoc, srcReader) -> {
+                    IntStream.range(0, count(srcReader)).forEachOrdered(pageIdx -> {
+                        TGS_UnSafe.run(() -> {
+                            pdfCopy.addPage(pdfCopy.getImportedPage(srcReader, (pageIdx + 1)));
+                        });
+                    });
+                });
+            });
         });
     }
 }

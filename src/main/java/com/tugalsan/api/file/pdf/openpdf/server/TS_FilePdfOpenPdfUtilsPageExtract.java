@@ -1,8 +1,40 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
+import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
+import com.tugalsan.api.unsafe.client.TGS_UnSafe;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TS_FilePdfOpenPdfUtilsPageExtract {
+
+    @Deprecated//OLD WAY
+    public static void extract_old(Path pdfSrcFile, int pageNr, Path pdfDstFile) {
+        TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(pdfDstFile, (docDst, pdfCopy) -> {
+            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, reader) -> {
+                TGS_UnSafe.run(() -> {
+                    pdfCopy.addPage(pdfCopy.getImportedPage(reader, pageNr + 1));
+                });
+            });
+        });
+    }
+
+    public static List<TGS_UnionExcuseVoid> extract_old(Path pdfSrcFile, int[] pageNrs, Path pdfDstFile) {
+        List<TGS_UnionExcuseVoid> results = new ArrayList();
+        TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(pdfDstFile, (docDst, pdfCopy) -> {
+            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, reader) -> {
+                TGS_UnSafe.run(() -> {
+                    Arrays.stream(pageNrs).forEach(pageNr -> {
+                        TGS_UnSafe.run(() -> {
+                            pdfCopy.addPage(pdfCopy.getImportedPage(reader, pageNr + 1));
+                        }, e -> results.add(TGS_UnionExcuseVoid.ofExcuse(e)));
+                    });
+                });
+            });
+        });
+        return results;
+    }
 
     public static void extract(Path srcFile, Path destFile1, Path destFile2, int newFile_PageIndex_StartOffset) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(srcFile, (srcDoc, srcReader) -> {
