@@ -16,30 +16,42 @@ public class TS_FilePdfOpenPdfUtilsPageCompress {
     }
 
     public static void set(PdfWriter pdfWriter, CompressionLevel cLvl) {
-        if (cLvl == CompressionLevel.BEST) {
-            pdfWriter.setFullCompression();
-            pdfWriter.setCompressionLevel(PdfStream.BEST_COMPRESSION);
-        }
-        if (cLvl == CompressionLevel.NORMAL) {
-            pdfWriter.setFullCompression();
-            pdfWriter.setCompressionLevel(PdfStream.DEFAULT_COMPRESSION);
-        }
-        if (cLvl == CompressionLevel.NONE) {
+        if (cLvl == null) {
             pdfWriter.setCompressionLevel(PdfStream.NO_COMPRESSION);
+        } else {
+            switch (cLvl) {
+                case BEST -> {
+                    pdfWriter.setFullCompression();
+                    pdfWriter.setCompressionLevel(PdfStream.BEST_COMPRESSION);
+                }
+                case NORMAL -> {
+                    pdfWriter.setFullCompression();
+                    pdfWriter.setCompressionLevel(PdfStream.DEFAULT_COMPRESSION);
+                }
+                default -> {//NONE
+                    pdfWriter.setCompressionLevel(PdfStream.NO_COMPRESSION);
+                }
+            }
         }
     }
 
     public static void set(PdfCopy pdfCopy, CompressionLevel cLvl) {
-        if (cLvl == CompressionLevel.BEST) {
-            pdfCopy.setFullCompression();
-            pdfCopy.setCompressionLevel(PdfStream.BEST_COMPRESSION);
-        }
-        if (cLvl == CompressionLevel.NORMAL) {
-            pdfCopy.setFullCompression();
-            pdfCopy.setCompressionLevel(PdfStream.DEFAULT_COMPRESSION);
-        }
-        if (cLvl == CompressionLevel.NONE) {
+        if (cLvl == null) {
             pdfCopy.setCompressionLevel(PdfStream.NO_COMPRESSION);
+        } else {
+            switch (cLvl) {
+                case BEST -> {
+                    pdfCopy.setFullCompression();
+                    pdfCopy.setCompressionLevel(PdfStream.BEST_COMPRESSION);
+                }
+                case NORMAL -> {
+                    pdfCopy.setFullCompression();
+                    pdfCopy.setCompressionLevel(PdfStream.DEFAULT_COMPRESSION);
+                }
+                default -> {//NONE
+                    pdfCopy.setCompressionLevel(PdfStream.NO_COMPRESSION);
+                }
+            }
         }
     }
 
