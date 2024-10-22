@@ -7,9 +7,9 @@ import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsPageHeader {
 
-    public static void addHeader(Path pdfSrcFile, Path pdfDstFile) {
+    public static void addHeader(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, Path pdfSrcFile, Path pdfDstFile) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, pdfReader) -> {
-            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(pdfDstFile, (dstDoc, pdfCopy) -> {
+            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, pdfDstFile, (dstDoc, pdfCopy) -> {
                 var count = TS_FilePdfOpenPdfUtilsPage.count(pdfReader);
                 var writerContent = pdfCopy.getDirectContent();
                 IntStream.rangeClosed(1, count).forEachOrdered(pageNumber -> {

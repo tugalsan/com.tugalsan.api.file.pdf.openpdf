@@ -3,7 +3,6 @@ package com.tugalsan.api.file.pdf.openpdf.server;
 import com.lowagie.text.pdf.PdfCopy;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.SimpleBookmark;
-import static com.tugalsan.api.file.pdf.openpdf.server.TS_FilePdfOpenPdfUtilsPage.count;
 import com.tugalsan.api.thread.server.sync.TS_ThreadSyncLst;
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
 import com.tugalsan.api.unsafe.client.TGS_UnSafe;
@@ -15,8 +14,8 @@ import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsPageMerge {
 
-    public static TGS_UnionExcuseVoid merge(List<Path> srcFiles, Path dstFile) {
-        return TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(dstFile, (dstDoc, copy) -> {
+    public static TGS_UnionExcuseVoid merge(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, List<Path> srcFiles, Path dstFile) {
+        return TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, dstFile, (dstDoc, copy) -> {
             TGS_UnSafe.run(() -> {
                 var pageIdxOffset = new AtomicInteger(0);
                 TS_ThreadSyncLst<Map<String, Object>> masterBookmarkList = TS_ThreadSyncLst.of();
@@ -56,8 +55,8 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
     }
 
     @Deprecated//OLD WAY
-    public static void merge_old(List<Path> pdfSrcFiles, Path pdfDstFile) {
-        TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(pdfDstFile, (docDst, pdfCopy) -> {
+    public static void merge_old(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, List<Path> pdfSrcFiles, Path pdfDstFile) {
+        TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, pdfDstFile, (docDst, pdfCopy) -> {
             pdfSrcFiles.stream().forEachOrdered(srcFile -> {
                 TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(srcFile, (srcDoc, srcReader) -> {
                     IntStream.range(0, TS_FilePdfOpenPdfUtilsPage.count(srcReader)).forEachOrdered(pageIdx -> {

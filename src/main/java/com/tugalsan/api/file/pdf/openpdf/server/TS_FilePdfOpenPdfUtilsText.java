@@ -9,21 +9,13 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
 import com.tugalsan.api.log.server.TS_Log;
-import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class TS_FilePdfOpenPdfUtilsText {
 
     final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsText.class);
 
-    public static TGS_UnionExcuseVoid test(Path dstPdf) {
-        return TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(TS_FilePdfOpenPdfUtilsPage.PAGE_INFO_A4_PORT_0_0_0_0, dstPdf, (doc, writer) -> {
-            doc.add(new Paragraph("Hello World"));
-        });
-    }
-
-    public static void main(String[] args) {
+    public static void test() {
 
         System.out.println("the Paragraph object");
 
