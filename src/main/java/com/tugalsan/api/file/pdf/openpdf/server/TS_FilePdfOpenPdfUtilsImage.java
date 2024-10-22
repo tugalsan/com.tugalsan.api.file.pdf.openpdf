@@ -81,7 +81,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
                 }
             }
             d.ci("ofPdf_fromImageFolder_A4PORT", "srcDir", srcDir, "#100", ":3", imgFile);
-            var u_file = toPdf(pageInfo, imgFile, quality, pdfFile);
+            var u_file = toPdf(pageInfo, pdfFile, quality, imgFile);
             d.ci("ofPdf_fromImageFolder_A4PORT", "srcDir", srcDir, "#100", ":4", imgFile);
             if (u_file.isExcuse()) {
                 d.ce("ofPdf_fromImageFolder_A4PORT", "srcDir", srcDir, "#100", "isExcuse", imgFile, u_file.excuse().getMessage());
