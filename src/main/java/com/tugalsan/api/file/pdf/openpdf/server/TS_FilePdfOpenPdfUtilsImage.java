@@ -1,11 +1,12 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
 import com.lowagie.text.Image;
-import com.lowagie.text.Paragraph;
 import com.tugalsan.api.charset.client.TGS_CharSetCast;
+import com.tugalsan.api.file.img.server.TS_FileImageUtils;
 import com.tugalsan.api.file.server.TS_DirectoryUtils;
 import com.tugalsan.api.file.server.TS_FileUtils;
 import com.tugalsan.api.log.server.TS_Log;
+import com.tugalsan.api.shape.client.TGS_ShapeDimension;
 import com.tugalsan.api.union.client.TGS_UnionExcuse;
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
 import com.tugalsan.api.unsafe.client.TGS_UnSafe;
@@ -24,14 +25,31 @@ public class TS_FilePdfOpenPdfUtilsImage {
     //TS_FilePdfOpenPdfUtilsPage.PAGE_INFO_A4_PORT_0_0_0_0
     public static TGS_UnionExcuseVoid toPdf(TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo, Path dstPdf, Path... srcImages) {
         return TGS_UnSafe.call(() -> {
-            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(pageInfo, dstPdf, (doc, writer) -> {
+            TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(pageInfo, dstPdf, (doc, pdfWriter) -> {
                 TGS_UnSafe.run(() -> {
+                    var firstPage = true;
                     for (var srcImage : srcImages) {
-                        var pathImageStr = srcImage.toAbsolutePath().toString();
-                        doc.add(new Paragraph(pathImageStr));
-                        var pdfImage = Image.getInstance(pathImageStr);
+                        //var pathImageStr = srcImage.toAbsolutePath().toString();
+                        //doc.add(new Paragraph(pathImageStr));
+                        var bi = TS_FileImageUtils.readImageFromFile(srcImage, true);
+                        var biScaled = TS_FileImageUtils.resize_and_rotate(
+                                bi,
+                                TGS_ShapeDimension.of(
+                                        (int) pageInfo.toRectangle().getWidth(),
+                                        (int) pageInfo.toRectangle().getHeight()
+                                ),
+                                0, true
+                        );
+                        var pdfImage = Image.getInstance(pdfWriter, biScaled, 1);
+                        pdfImage.setAbsolutePosition(0, 0);
                         pdfImage.scaleToFit(pageInfo.toRectangle().getWidth(), pageInfo.toRectangle().getHeight());
+                        if (!firstPage) {
+                            doc.newPage();
+                        }
                         doc.add(pdfImage);
+                        if (firstPage) {
+                            firstPage = false;
+                        }
                     }
                 });
             });
