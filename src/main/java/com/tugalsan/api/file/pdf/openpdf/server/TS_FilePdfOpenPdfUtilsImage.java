@@ -18,12 +18,12 @@ public class TS_FilePdfOpenPdfUtilsImage {
 
     private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsImage.class);
 
-    public static TGS_UnionExcuseVoid toPdf(TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo, Path dstPdf, List<Path> srcImages) {
-        return toPdf(pageInfo, dstPdf, srcImages.toArray(Path[]::new));
+    public static TGS_UnionExcuseVoid toPdf(TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo, Path dstPdf, float quality, List<Path> srcImages) {
+        return toPdf(pageInfo, dstPdf, quality, srcImages.toArray(Path[]::new));
     }
 
     //TS_FilePdfOpenPdfUtilsPage.PAGE_INFO_A4_PORT_0_0_0_0
-    public static TGS_UnionExcuseVoid toPdf(TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo, Path dstPdf, Path... srcImages) {
+    public static TGS_UnionExcuseVoid toPdf(TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo, Path dstPdf, float quality, Path... srcImages) {
         return TGS_UnSafe.call(() -> {
             TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(pageInfo, dstPdf, (doc, pdfWriter) -> {
                 TGS_UnSafe.run(() -> {
@@ -40,7 +40,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
                                 ),
                                 0, true
                         );
-                        var pdfImage = Image.getInstance(pdfWriter, biScaled, 1);
+                        var pdfImage = Image.getInstance(pdfWriter, biScaled, quality);
                         pdfImage.setAbsolutePosition(0, 0);
                         pdfImage.scaleToFit(pageInfo.toRectangle().getWidth(), pageInfo.toRectangle().getHeight());
                         if (!firstPage) {
@@ -62,7 +62,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
         return fn.endsWith(".jpg") || fn.endsWith(".jpeg") || fn.endsWith(".tif") || fn.endsWith(".tiff") || fn.endsWith(".gif") || fn.endsWith(".bmp") || fn.endsWith(".png") || fn.endsWith(".wmf");
     }
 
-    public static List<TGS_UnionExcuse<Path>> toPdf_fromDir(TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo, Path srcDir, boolean skipIfExists, boolean deleteIMGAfterConversion) {
+    public static List<TGS_UnionExcuse<Path>> toPdf_fromDir(TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo, Path srcDir, float quality, boolean skipIfExists, boolean deleteIMGAfterConversion) {
         d.ci("ofPdf_fromImageFolder_A4PORT", "srcDir", srcDir, "#10");
         var subFiles = TS_DirectoryUtils.subFiles(srcDir, null, false, false);
         d.ci("ofPdf_fromImageFolder_A4PORT", "srcDir", srcDir, "#20");
@@ -81,7 +81,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
                 }
             }
             d.ci("ofPdf_fromImageFolder_A4PORT", "srcDir", srcDir, "#100", ":3", imgFile);
-            var u_file = toPdf(pageInfo, imgFile, pdfFile);
+            var u_file = toPdf(pageInfo, imgFile, quality, pdfFile);
             d.ci("ofPdf_fromImageFolder_A4PORT", "srcDir", srcDir, "#100", ":4", imgFile);
             if (u_file.isExcuse()) {
                 d.ce("ofPdf_fromImageFolder_A4PORT", "srcDir", srcDir, "#100", "isExcuse", imgFile, u_file.excuse().getMessage());
