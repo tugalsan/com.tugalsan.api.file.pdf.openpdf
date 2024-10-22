@@ -38,7 +38,7 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
     private static void merge(PdfCopy copy, AtomicInteger pageIdxOffset, TS_ThreadSyncLst<Map<String, Object>> masterBookmarkList, PdfReader srcReader) {
         TGS_UnSafe.run(() -> {
             srcReader.consolidateNamedDestinations();
-            var numberOfPages = srcReader.getNumberOfPages();
+            var count = TS_FilePdfOpenPdfUtilsPage.count(srcReader);
             List<Map<String, Object>> bookmarks = SimpleBookmark.getBookmarkList(srcReader);
             if (bookmarks != null) {
                 if (pageIdxOffset.get() != 0) {
@@ -46,8 +46,8 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
                 }
                 masterBookmarkList.add(bookmarks);
             }
-            pageIdxOffset.set(pageIdxOffset.get() + numberOfPages);
-            for (var i = 1; i <= numberOfPages; i++) {
+            pageIdxOffset.set(pageIdxOffset.get() + count);
+            for (var i = 1; i <= count; i++) {
                 var page = copy.getImportedPage(srcReader, i);
                 copy.addPage(page);
             }
@@ -60,7 +60,7 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(pdfDstFile, (docDst, pdfCopy) -> {
             pdfSrcFiles.stream().forEachOrdered(srcFile -> {
                 TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(srcFile, (srcDoc, srcReader) -> {
-                    IntStream.range(0, count(srcReader)).forEachOrdered(pageIdx -> {
+                    IntStream.range(0, TS_FilePdfOpenPdfUtilsPage.count(srcReader)).forEachOrdered(pageIdx -> {
                         TGS_UnSafe.run(() -> {
                             pdfCopy.addPage(pdfCopy.getImportedPage(srcReader, (pageIdx + 1)));
                         });
