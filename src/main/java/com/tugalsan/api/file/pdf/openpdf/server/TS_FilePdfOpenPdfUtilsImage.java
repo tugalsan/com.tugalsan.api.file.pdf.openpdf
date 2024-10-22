@@ -29,7 +29,9 @@ public class TS_FilePdfOpenPdfUtilsImage {
                     for (var srcImage : srcImages) {
                         var pathImageStr = srcImage.toAbsolutePath().toString();
                         doc.add(new Paragraph(pathImageStr));
-                        doc.add(Image.getInstance(pathImageStr));
+                        var pdfImage = Image.getInstance(pathImageStr);
+                        pdfImage.scaleToFit(pageInfo.toRectangle().getWidth(), pageInfo.toRectangle().getHeight());
+                        doc.add(pdfImage);
                     }
                 });
             });
