@@ -24,11 +24,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.IntStream;
 
+//    private static String GOOGLEPDF () "https://docs.google.com/gview?url=";
 public class TS_FilePdfOpenPdfUtils {
 
     final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtils.class);
 
-    //    private static String GOOGLEPDF () "https://docs.google.com/gview?url=";
     public static Color getFONT_COLOR_BLACK() {
         return Color.BLACK;
     }
@@ -245,7 +245,7 @@ public class TS_FilePdfOpenPdfUtils {
         var offsetY = 0;
         var c = new Chunk(image, offsetX + 0, offsetY + -h / 2, true);
         cell.setMinimumHeight(h);
-        d.cr("addImage2Cell", "image.getHeight()", h);
+        d.ci("addImage2Cell", "image.getHeight()", h);
         cell.addElement(c);
     }
 
