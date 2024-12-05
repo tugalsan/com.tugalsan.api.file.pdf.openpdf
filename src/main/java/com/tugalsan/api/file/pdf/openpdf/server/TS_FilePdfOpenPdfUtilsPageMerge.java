@@ -18,7 +18,7 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
         return TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, dstFile, (dstDoc, copy) -> {
             TGS_UnSafe.run(() -> {
                 var pageIdxOffset = new AtomicInteger(0);
-                TS_ThreadSyncLst<Map<String, Object>> masterBookmarkList = TS_ThreadSyncLst.of();
+                TS_ThreadSyncLst<Map<String, Object>> masterBookmarkList = TS_ThreadSyncLst.ofSlowRead();
                 for (Path srcFile : srcFiles) {
                     var u_reader = TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(srcFile, (srcDoc, srcReader) -> {
                         merge(copy, pageIdxOffset, masterBookmarkList, srcReader);
@@ -28,7 +28,7 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
                     }
                 }
                 if (!masterBookmarkList.isEmpty()) {
-                    copy.setOutlines(masterBookmarkList.toList());
+                    copy.setOutlines(masterBookmarkList.toList_fast());
                 }
             });
         });
