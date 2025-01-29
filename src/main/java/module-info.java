@@ -1,5 +1,6 @@
 module com.tugalsan.api.file.pdf.openpdf {
     requires java.desktop;
+    requires org.apache.commons.io;
     requires com.github.librepdf.openpdf;
     requires com.tugalsan.api.url;
     requires com.tugalsan.api.file.common;
