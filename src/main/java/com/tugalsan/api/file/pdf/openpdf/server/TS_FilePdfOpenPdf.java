@@ -50,6 +50,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             instance.use_init(fileCommonConfig);
             pdf.run(instance);
         } catch (Exception e) {
+            TGS_UnSafe.throwIfInterruptedException(e);
             instance.saveFile(e.getMessage());
             throw e;
         } finally {
