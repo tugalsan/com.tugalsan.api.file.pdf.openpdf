@@ -9,6 +9,8 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 public class TS_FilePdfOpenPdfUtilsHtml {
 
+//    final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsHtml.class);
+
     public TGS_UnionExcuseVoid toPdf(Path pathHtmlInput, Path pathPdfOutput) {
         return TGS_UnSafe.call(() -> {
             var html = new String(Files.readAllBytes(pathHtmlInput));
@@ -22,7 +24,5 @@ public class TS_FilePdfOpenPdfUtilsHtml {
             }
             return TGS_UnionExcuseVoid.ofVoid();
         }, e -> TGS_UnionExcuseVoid.ofExcuse(e));
-
     }
-
 }
