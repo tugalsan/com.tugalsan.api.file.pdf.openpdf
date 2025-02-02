@@ -30,6 +30,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
 
     final private static TS_Log d = TS_Log.of(false, TS_FilePdfOpenPdf.class);
 
+    @Override
     public String getSuperClassName() {
         return d.className;
     }
