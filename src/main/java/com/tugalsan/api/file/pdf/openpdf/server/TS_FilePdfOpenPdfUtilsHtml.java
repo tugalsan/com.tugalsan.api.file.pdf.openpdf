@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import org.jsoup.Jsoup;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+@Deprecated //HOW about using com.tugalsan.api.file.pdf.pdfbox3.server.TS_FilePdfBox3UtilsHtml.toPdf(Path srcHTM, Path dstPDF)
 public class TS_FilePdfOpenPdfUtilsHtml {
 
 //    final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsHtml.class);
