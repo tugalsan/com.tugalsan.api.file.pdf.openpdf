@@ -16,7 +16,7 @@ public class TS_FilePdfOpenPdfUtilsHtml {
         return TGS_UnSafe.call(() -> {
             var html = new String(Files.readAllBytes(pathHtmlInput));
             var doc = Jsoup.parse(html);
-            doc.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+            doc.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.html);
             var renderer = new ITextRenderer();
             renderer.setDocumentFromString(doc.html());
             renderer.layout();
