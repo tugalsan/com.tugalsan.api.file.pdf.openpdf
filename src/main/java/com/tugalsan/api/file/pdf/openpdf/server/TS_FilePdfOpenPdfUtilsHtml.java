@@ -12,7 +12,7 @@ public class TS_FilePdfOpenPdfUtilsHtml {
 
 //    final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsHtml.class);
 
-    public TGS_UnionExcuseVoid toPdf(Path pathHtmlInput, Path pathPdfOutput) {
+    public static TGS_UnionExcuseVoid toPdf(Path pathHtmlInput, Path pathPdfOutput) {
         return TGS_UnSafe.call(() -> {
             var html = new String(Files.readAllBytes(pathHtmlInput));
             var doc = Jsoup.parse(html);
