@@ -25,7 +25,7 @@ import java.util.stream.IntStream;
 
 //https://github.com/LibrePDF/OpenPDF/wiki/Tutorial
 //https://web.archive.org/web/20090703162811/http://itextdocs.lowagie.com/tutorial/
-@Deprecated //TODO: Whole com.tugalsan.api.file.pdf.openpdf project will be deprecated, If I can able to migrate this class to com.tugalsan.api.file.pdf.pdfbox3.server.TS_FilePdfBox3
+@Deprecated //TODO: Whole com.tugalsan.api.file.pdf.openpdf project will be deprecated, If I can able to migrate this class to com.tugalsan.api.file.pdf.pdfbox3.server.TS_FilePdfBox3FileCommon
 public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
 
     final private static TS_Log d = TS_Log.of(false, TS_FilePdfOpenPdf.class);
