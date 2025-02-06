@@ -71,28 +71,30 @@ public class TS_FilePdfOpenPdfUtilsImage {
         }
         return TGS_UnSafe.call(() -> {
             var pdfImageFirst = Image.getInstance(srcImages[0].toAbsolutePath().toString());
-            try (var _doc = new Document(pdfImageFirst, 0, 0, 0, 0)) {
-                var pdfWriter = PdfWriter.getInstance(_doc, Files.newOutputStream(dstPdf));
-                TS_FilePdfOpenPdfUtilsPageCompress.set(pdfWriter, cLvl);
-                _doc.open();
-                pdfWriter.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
-                TGS_UnSafe.run(() -> {
-                    var firstPage = true;
-                    for (var srcImage : srcImages) {
-                        var bi = TS_FileImageUtils.readImageFromFile(srcImage, true);
-                        var pdfImage = Image.getInstance(pdfWriter, bi, quality);
-                        pdfImage.setAbsolutePosition(0, 0);
-                        if (!firstPage) {
-                            _doc.setPageSize(pdfImage);
-                            _doc.newPage();
+            try (var os = Files.newOutputStream(dstPdf)) {
+                try (var _doc = new Document(pdfImageFirst, 0, 0, 0, 0)) {
+                    var pdfWriter = PdfWriter.getInstance(_doc, os);
+                    TS_FilePdfOpenPdfUtilsPageCompress.set(pdfWriter, cLvl);
+                    _doc.open();
+                    pdfWriter.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
+                    TGS_UnSafe.run(() -> {
+                        var firstPage = true;
+                        for (var srcImage : srcImages) {
+                            var bi = TS_FileImageUtils.readImageFromFile(srcImage, true);
+                            var pdfImage = Image.getInstance(pdfWriter, bi, quality);
+                            pdfImage.setAbsolutePosition(0, 0);
+                            if (!firstPage) {
+                                _doc.setPageSize(pdfImage);
+                                _doc.newPage();
+                            }
+                            _doc.add(pdfImage);
+                            if (firstPage) {
+                                firstPage = false;
+                            }
                         }
-                        _doc.add(pdfImage);
-                        if (firstPage) {
-                            firstPage = false;
-                        }
-                    }
-                });
-                return TGS_UnionExcuseVoid.ofVoid();
+                    });
+                    return TGS_UnionExcuseVoid.ofVoid();
+                }
             }
         }, e -> TGS_UnionExcuseVoid.ofExcuse(e));
     }

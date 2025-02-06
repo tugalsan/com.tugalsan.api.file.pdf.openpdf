@@ -21,39 +21,45 @@ public class TS_FilePdfOpenPdfUtilsDocument {
 
     public static TGS_UnionExcuseVoid run_doc_with_copy(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, Path dstPdf, TGS_Func_In2<Document, PdfCopy> doc_copy) {
         return TGS_UnSafe.call(() -> {
-            try (var _doc = new Document()) {
-                var pdfCopy = new PdfCopy(_doc, new BufferedOutputStream(Files.newOutputStream(dstPdf)));
-                pdfCopy.setPdfVersion(PdfWriter.VERSION_1_7);
-                TS_FilePdfOpenPdfUtilsPageCompress.set(pdfCopy, cLvl);
-                _doc.open();
-                pdfCopy.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
-                doc_copy.call(_doc, pdfCopy);
-                return TGS_UnionExcuseVoid.ofVoid();
+            try (var os = Files.newOutputStream(dstPdf)) {
+                try (var _doc = new Document()) {
+                    var pdfCopy = new PdfCopy(_doc, new BufferedOutputStream(os));
+                    pdfCopy.setPdfVersion(PdfWriter.VERSION_1_7);
+                    TS_FilePdfOpenPdfUtilsPageCompress.set(pdfCopy, cLvl);
+                    _doc.open();
+                    pdfCopy.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
+                    doc_copy.call(_doc, pdfCopy);
+                    return TGS_UnionExcuseVoid.ofVoid();
+                }
             }
         }, e -> TGS_UnionExcuseVoid.ofExcuse(e));
     }
 
     public static TGS_UnionExcuseVoid run_doc_with_writer(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, PageInfo pageInfo, Path dstPdf, TGS_Func_In2<Document, PdfWriter> doc_writer) {
         return TGS_UnSafe.call(() -> {
-            try (var _doc = new Document(pageInfo.toRectangle(), pageInfo.marginLeft(), pageInfo.marginRight(), pageInfo.marginTop(), pageInfo.marginBottom())) {
-                var pdfWriter = PdfWriter.getInstance(_doc, Files.newOutputStream(dstPdf));
-                TS_FilePdfOpenPdfUtilsPageCompress.set(pdfWriter, cLvl);
-                _doc.open();
-                pdfWriter.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
-                doc_writer.run(_doc, pdfWriter);
-                return TGS_UnionExcuseVoid.ofVoid();
+            try (var os = Files.newOutputStream(dstPdf)) {
+                try (var _doc = new Document(pageInfo.toRectangle(), pageInfo.marginLeft(), pageInfo.marginRight(), pageInfo.marginTop(), pageInfo.marginBottom())) {
+                    var pdfWriter = PdfWriter.getInstance(_doc, os);
+                    TS_FilePdfOpenPdfUtilsPageCompress.set(pdfWriter, cLvl);
+                    _doc.open();
+                    pdfWriter.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
+                    doc_writer.run(_doc, pdfWriter);
+                    return TGS_UnionExcuseVoid.ofVoid();
+                }
             }
         }, e -> TGS_UnionExcuseVoid.ofExcuse(e));
     }
 
     public static <T> TGS_UnionExcuse<T> call_doc_with_writer(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, PageInfo pageInfo, Path dstPdf, TGS_Func_OutTyped_In2<T, Document, PdfWriter> doc_writer) {
         return TGS_UnSafe.call(() -> {
-            try (var _doc = new Document(pageInfo.toRectangle(), pageInfo.marginLeft(), pageInfo.marginRight(), pageInfo.marginTop(), pageInfo.marginBottom())) {
-                var pdfWriter = PdfWriter.getInstance(_doc, Files.newOutputStream(dstPdf));
-                TS_FilePdfOpenPdfUtilsPageCompress.set(pdfWriter, cLvl);
-                _doc.open();
-                pdfWriter.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
-                return TGS_UnionExcuse.of(doc_writer.call(_doc, pdfWriter));
+            try (var os = Files.newOutputStream(dstPdf)) {
+                try (var _doc = new Document(pageInfo.toRectangle(), pageInfo.marginLeft(), pageInfo.marginRight(), pageInfo.marginTop(), pageInfo.marginBottom())) {
+                    var pdfWriter = PdfWriter.getInstance(_doc, os);
+                    TS_FilePdfOpenPdfUtilsPageCompress.set(pdfWriter, cLvl);
+                    _doc.open();
+                    pdfWriter.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
+                    return TGS_UnionExcuse.of(doc_writer.call(_doc, pdfWriter));
+                }
             }
         }, e -> TGS_UnionExcuse.ofExcuse(e));
     }
@@ -68,11 +74,13 @@ public class TS_FilePdfOpenPdfUtilsDocument {
 
     public static TGS_UnionExcuseVoid run_doc_with_reader(Path srcPdf, byte[] password, TGS_Func_In2<Document, PdfReader> doc_reader) {
         return TGS_UnSafe.call(() -> {
-            try (var _doc = new Document()) {
-                try (var raf = new RandomAccessFileOrArray(Files.newInputStream(srcPdf))) {
-                    var reader = new PdfReader(raf, password);
-                    doc_reader.run(_doc, reader);
-                    return TGS_UnionExcuseVoid.ofVoid();
+            try (var is = Files.newInputStream(srcPdf)) {
+                try (var _doc = new Document()) {
+                    try (var raf = new RandomAccessFileOrArray(is)) {
+                        var reader = new PdfReader(raf, password);
+                        doc_reader.run(_doc, reader);
+                        return TGS_UnionExcuseVoid.ofVoid();
+                    }
                 }
             }
         }, e -> TGS_UnionExcuseVoid.ofExcuse(e));
@@ -80,10 +88,12 @@ public class TS_FilePdfOpenPdfUtilsDocument {
 
     public static <T> TGS_UnionExcuse<T> call_doc_with_reader(Path srcPdf, byte[] password, TGS_Func_OutTyped_In2<T, Document, PdfReader> doc_reader) {
         return TGS_UnSafe.call(() -> {
-            try (var _doc = new Document()) {
-                try (var raf = new RandomAccessFileOrArray(Files.newInputStream(srcPdf))) {
-                    var reader = new PdfReader(raf, password);
-                    return TGS_UnionExcuse.of(doc_reader.call(_doc, reader));
+            try (var is = Files.newInputStream(srcPdf)) {
+                try (var _doc = new Document()) {
+                    try (var raf = new RandomAccessFileOrArray(is)) {
+                        var reader = new PdfReader(raf, password);
+                        return TGS_UnionExcuse.of(doc_reader.call(_doc, reader));
+                    }
                 }
             }
         }, e -> TGS_UnionExcuse.ofExcuse(e));
