@@ -495,7 +495,12 @@ public class TS_FilePdfOpenPdfUtils {
 
     public void close() {
         TGS_UnSafe.run(() -> {
-            closeFix();
+            if (skipCloseFix) {
+                return;
+            }
+            var p = createParagraph();
+            addChunkToParagraph(createChunkText("."), p);
+            addParagraphToPage(p);
         }, e -> d.ct("close.closeFix", e));
         TGS_UnSafe.run(() -> {
             if (document != null) {
@@ -508,15 +513,5 @@ public class TS_FilePdfOpenPdfUtils {
             }
         }, e -> d.ct("close.writer", e));
     }
-
-    private void closeFix() {
-        if (skipCloseFix) {
-            return;
-        }
-        var p = createParagraph();
-        addChunkToParagraph(createChunkText("."), p);
-        addParagraphToPage(p);
-    }
     public boolean skipCloseFix = true;
-
 }
