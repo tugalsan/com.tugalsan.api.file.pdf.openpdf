@@ -493,11 +493,6 @@ public class TS_FilePdfOpenPdfUtils {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
     }
 
-    public void getPageNumber() {
-        document.getPageNumber();
-    }
-
-//    @Override
     public void close() {
         TGS_UnSafe.run(() -> {
             closeFix();
