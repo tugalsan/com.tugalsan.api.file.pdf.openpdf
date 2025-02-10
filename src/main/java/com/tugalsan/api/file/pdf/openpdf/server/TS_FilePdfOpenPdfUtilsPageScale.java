@@ -1,7 +1,7 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
 import com.lowagie.text.pdf.PdfStamper;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.util.stream.IntStream;
@@ -10,7 +10,7 @@ public class TS_FilePdfOpenPdfUtilsPageScale {
 
     public static void scale(Path pdfSrcFile, Path pdfDstFile, float scaleFactor) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, pdfReader) -> {
-            TGS_UnSafe.run(() -> {
+            TGS_FuncMTCEUtils.run(() -> {
                 try (var zos = new FileOutputStream(pdfDstFile.toFile()); var pdfStamper = new PdfStamper(pdfReader, zos);) {
                     var count = TS_FilePdfOpenPdfUtilsPage.count(pdfReader);
                     IntStream.rangeClosed(1, count).forEachOrdered(p -> {

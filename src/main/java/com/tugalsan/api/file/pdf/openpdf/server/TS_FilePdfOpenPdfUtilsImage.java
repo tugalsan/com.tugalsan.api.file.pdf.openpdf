@@ -13,7 +13,7 @@ import com.tugalsan.api.log.server.TS_Log;
 import com.tugalsan.api.shape.client.TGS_ShapeDimension;
 import com.tugalsan.api.union.client.TGS_UnionExcuse;
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -32,9 +32,9 @@ public class TS_FilePdfOpenPdfUtilsImage {
         if (pageInfo_orNullForImageSize == null) {
             return toPdf_useImageSize(cLvl, dstPdf, quality, srcImages);
         }
-        return TGS_UnSafe.call(() -> {
+        return TGS_FuncMTCEUtils.call(() -> {
             TS_FilePdfOpenPdfUtilsDocument.run_doc_with_writer(cLvl, pageInfo_orNullForImageSize, dstPdf, (doc, pdfWriter) -> {
-                TGS_UnSafe.run(() -> {
+                TGS_FuncMTCEUtils.run(() -> {
                     var firstPage = true;
                     for (var srcImage : srcImages) {
                         //var pathImageStr = srcImage.toAbsolutePath().toString();
@@ -69,7 +69,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
         if (srcImages == null || srcImages.length == 0) {
             return TGS_UnionExcuseVoid.ofExcuse(d.className, "toPdf_protectImageSize", "srcImages == null || srcImages.length == 0");
         }
-        return TGS_UnSafe.call(() -> {
+        return TGS_FuncMTCEUtils.call(() -> {
             var pdfImageFirst = Image.getInstance(srcImages[0].toAbsolutePath().toString());
             try (var os = Files.newOutputStream(dstPdf)) {
                 try (var _doc = new Document(pdfImageFirst, 0, 0, 0, 0)) {
@@ -77,7 +77,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
                     TS_FilePdfOpenPdfUtilsPageCompress.set(pdfWriter, cLvl);
                     _doc.open();
                     pdfWriter.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
-                    TGS_UnSafe.run(() -> {
+                    TGS_FuncMTCEUtils.run(() -> {
                         var firstPage = true;
                         for (var srcImage : srcImages) {
                             var bi = TS_FileImageUtils.readImageFromFile(srcImage, true);

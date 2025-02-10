@@ -3,7 +3,7 @@ package com.tugalsan.api.file.pdf.openpdf.server;
 import com.lowagie.text.pdf.PdfName;
 import com.lowagie.text.pdf.PdfNumber;
 import com.lowagie.text.pdf.PdfStamper;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.util.stream.IntStream;
@@ -12,7 +12,7 @@ public class TS_FilePdfOpenPdfUtilsPageRotate {
 
     public static void rotate(Path pdfSrcFile, Path pdfDstFile, int degree) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, pdfReader) -> {
-            TGS_UnSafe.run(() -> {
+            TGS_FuncMTCEUtils.run(() -> {
                 try (var zos = new FileOutputStream(pdfDstFile.toFile())) {
                     var count = TS_FilePdfOpenPdfUtilsPage.count(pdfReader);
                     IntStream.rangeClosed(1, count).parallel().forEach(i -> {

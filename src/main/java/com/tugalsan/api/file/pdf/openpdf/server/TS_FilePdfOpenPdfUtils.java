@@ -16,9 +16,10 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.tugalsan.api.charset.client.TGS_CharSet;
 import com.tugalsan.api.file.server.TS_FileUtils;
-import com.tugalsan.api.function.client.TGS_FuncEffectivelyFinal;
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCEEffectivelyFinal;
 import com.tugalsan.api.log.server.TS_Log;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCEUtils;
 import java.awt.Color;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -153,17 +154,17 @@ public class TS_FilePdfOpenPdfUtils {
     }
 
     public void createNewPage(int pageSizeAX0, boolean landscape, Integer marginLeft0, Integer marginRight0, Integer marginTop0, Integer marginBottom0) {
-        TGS_UnSafe.run(() -> {
+        TGS_FuncMTCEUtils.run(() -> {
             d.ci("createNewPage");
             var marginLeft = marginLeft0 == null ? 50 : marginLeft0;
             var marginRight = marginRight0 == null ? 10 : marginRight0;
             var marginTop = marginTop0 == null ? 10 : marginTop0;
             var marginBottom = marginBottom0 == null ? 10 : marginBottom0;
-            var pageSizeAX = TGS_FuncEffectivelyFinal.of(pageSizeAX0)
+            var pageSizeAX = TGS_FuncMTUCEEffectivelyFinal.of(pageSizeAX0)
                     .anointIf(val -> val < 0, val -> 0)
                     .anointIf(val -> val > 6, val -> 6)
                     .coronate();
-            var pageSize = TGS_FuncEffectivelyFinal.of(getPAGE_SIZE_A4_PORT())
+            var pageSize = TGS_FuncMTUCEEffectivelyFinal.of(getPAGE_SIZE_A4_PORT())
                     .anointIf(val -> pageSizeAX == 0, val -> landscape ? getPAGE_SIZE_A0_LAND() : getPAGE_SIZE_A0_PORT())
                     .anointIf(val -> pageSizeAX == 1, val -> landscape ? getPAGE_SIZE_A1_LAND() : getPAGE_SIZE_A1_PORT())
                     .anointIf(val -> pageSizeAX == 2, val -> landscape ? getPAGE_SIZE_A2_LAND() : getPAGE_SIZE_A2_PORT())
@@ -227,11 +228,11 @@ public class TS_FilePdfOpenPdfUtils {
     }
 
     public Image createImage(java.awt.Image imageFile, Color color) {
-        return TGS_UnSafe.call(() -> Image.getInstance(imageFile, color));
+        return TGS_FuncMTCEUtils.call(() -> Image.getInstance(imageFile, color));
     }
 
     public Image createImage(CharSequence filePath) {
-        return TGS_UnSafe.call(() -> Image.getInstance(filePath.toString()));
+        return TGS_FuncMTCEUtils.call(() -> Image.getInstance(filePath.toString()));
     }
 
     private static void addImage2Document(Document document, Image image) throws DocumentException {
@@ -254,9 +255,9 @@ public class TS_FilePdfOpenPdfUtils {
     }
 
     public void addImageToPageLeft(Image image, boolean textWrap, boolean transperancyAsWhite) {
-        TGS_UnSafe.run(() -> {
+        TGS_FuncMTCEUtils.run(() -> {
             if (image == null) {
-                TGS_UnSafe.thrw(d.className, "addImageToPageLeft", "image == null");
+                TGS_FuncMTUCEUtils.thrw(d.className, "addImageToPageLeft", "image == null");
                 return;
             }
             if (textWrap) {
@@ -273,9 +274,9 @@ public class TS_FilePdfOpenPdfUtils {
     }
 
     public void addImageToPageRight(Image image, boolean textWrap, boolean transperancyAsWhite) {
-        TGS_UnSafe.run(() -> {
+        TGS_FuncMTCEUtils.run(() -> {
             if (image == null) {
-                TGS_UnSafe.thrw(d.className, "addImageToPageRight", "image == null");
+                TGS_FuncMTUCEUtils.thrw(d.className, "addImageToPageRight", "image == null");
                 return;
             }
             if (textWrap) {
@@ -292,9 +293,9 @@ public class TS_FilePdfOpenPdfUtils {
     }
 
     public void addImageToPageCenter(Image image, boolean textWrap, boolean transperancyAsWhite) {
-        TGS_UnSafe.run(() -> {
+        TGS_FuncMTCEUtils.run(() -> {
             if (image == null) {
-                TGS_UnSafe.thrw(d.className, "addImageToPageCenter", "image == null");
+                TGS_FuncMTUCEUtils.thrw(d.className, "addImageToPageCenter", "image == null");
                 return;
             }
             if (textWrap) {
@@ -369,11 +370,11 @@ public class TS_FilePdfOpenPdfUtils {
     }
 
     public void addParagraphToPage(Paragraph p) {
-        TGS_UnSafe.run(() -> document.add(p));
+        TGS_FuncMTCEUtils.run(() -> document.add(p));
     }
 
     public void addTableToPage(PdfPTable table) {
-        TGS_UnSafe.run(() -> document.add(table));
+        TGS_FuncMTCEUtils.run(() -> document.add(table));
     }
 
     public void addCellToTable(PdfPTable table, PdfPCell cell, int rotation_0_90_180_270) {
@@ -387,7 +388,7 @@ public class TS_FilePdfOpenPdfUtils {
 //    final private static TS_ThreadSyncLst<FontBufferItem> fontBuffer = TS_ThreadSyncLst.of();
     public static Font getFontFrom(int height, boolean bold, boolean italic, Color fontColor,
             Path path, float fontSizeCorrectionForFontFile) {
-        var style = TGS_FuncEffectivelyFinal.ofInt().coronateAs(__ -> {
+        var style = TGS_FuncMTUCEEffectivelyFinal.ofInt().coronateAs(__ -> {
             if (bold && italic) {
                 return Font.BOLDITALIC;
             }
@@ -416,7 +417,7 @@ public class TS_FilePdfOpenPdfUtils {
             return getFontInternal(height, bold, italic, fontColor);
         }
         var newPdfFont = new Font(
-                TGS_UnSafe.call(() -> {
+                TGS_FuncMTCEUtils.call(() -> {
                     return BaseFont.createFont(
                             path.toAbsolutePath().normalize().toString(),
                             BaseFont.IDENTITY_H, BaseFont.EMBEDDED
@@ -429,7 +430,7 @@ public class TS_FilePdfOpenPdfUtils {
     }
 
     public static Font getFontInternal(int fontSize, boolean bold, boolean italic, Color fontColor) {
-        var fontStyle = TGS_FuncEffectivelyFinal.ofInt().coronateAs(__ -> {
+        var fontStyle = TGS_FuncMTUCEEffectivelyFinal.ofInt().coronateAs(__ -> {
             if (bold && italic) {
                 return Font.BOLDITALIC;
             }
@@ -494,7 +495,7 @@ public class TS_FilePdfOpenPdfUtils {
     }
 
     public void close() {
-        TGS_UnSafe.run(() -> {
+        TGS_FuncMTCEUtils.run(() -> {
             if (skipCloseFix) {
                 return;
             }
@@ -502,12 +503,12 @@ public class TS_FilePdfOpenPdfUtils {
             addChunkToParagraph(createChunkText("."), p);
             addParagraphToPage(p);
         }, e -> d.ct("close.closeFix", e));
-        TGS_UnSafe.run(() -> {
+        TGS_FuncMTCEUtils.run(() -> {
             if (document != null) {
                 document.close();
             }
         }, e -> d.ct("close.document", e));
-        TGS_UnSafe.run(() -> {
+        TGS_FuncMTCEUtils.run(() -> {
             if (writer != null) {
                 writer.close();
             }

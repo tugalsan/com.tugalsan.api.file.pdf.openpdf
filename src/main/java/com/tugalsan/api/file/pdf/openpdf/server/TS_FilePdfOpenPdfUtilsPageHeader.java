@@ -1,7 +1,7 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
 import com.lowagie.text.Paragraph;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
 import java.nio.file.Path;
 import java.util.stream.IntStream;
 
@@ -13,7 +13,7 @@ public class TS_FilePdfOpenPdfUtilsPageHeader {
                 var count = TS_FilePdfOpenPdfUtilsPage.count(pdfReader);
                 var writerContent = pdfCopy.getDirectContent();
                 IntStream.rangeClosed(1, count).forEachOrdered(pageNumber -> {
-                    TGS_UnSafe.run(() -> {
+                    TGS_FuncMTCEUtils.run(() -> {
                         var page = pdfCopy.getImportedPage(pdfReader, 1);
                         dstDoc.newPage();
                         writerContent.addTemplate(page, 0, 0);

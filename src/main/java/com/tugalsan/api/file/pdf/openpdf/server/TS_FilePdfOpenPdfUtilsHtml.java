@@ -1,7 +1,7 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.jsoup.Jsoup;
@@ -13,7 +13,7 @@ public class TS_FilePdfOpenPdfUtilsHtml {
 //    final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsHtml.class);
 
     public static TGS_UnionExcuseVoid toPdf(Path pathHtmlInput, Path pathPdfOutput) {
-        return TGS_UnSafe.call(() -> {
+        return TGS_FuncMTCEUtils.call(() -> {
             var html = new String(Files.readAllBytes(pathHtmlInput));
             var doc = Jsoup.parse(html);
             doc.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.html);

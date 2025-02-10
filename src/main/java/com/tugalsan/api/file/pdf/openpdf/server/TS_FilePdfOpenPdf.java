@@ -12,10 +12,11 @@ import com.tugalsan.api.file.common.server.TS_FileCommonAbstract;
 import com.tugalsan.api.file.common.server.TS_FileCommonConfig;
 import com.tugalsan.api.file.common.server.TS_FileCommonFontTags;
 import com.tugalsan.api.file.server.TS_FileUtils;
-import com.tugalsan.api.function.client.TGS_Func_In1;
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCE_In1;
 import com.tugalsan.api.string.client.TGS_StringDouble;
 import com.tugalsan.api.string.client.TGS_StringUtils;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.TGS_FuncUtils;
+import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
 import com.tugalsan.api.url.client.TGS_Url;
 import java.awt.Color;
 import java.awt.Image;
@@ -51,13 +52,13 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         super(enabled, localFile, remoteFile);
     }
 
-    public static void use(boolean enabled, TS_FileCommonConfig fileCommonConfig, Path localFile, TGS_Url remoteFile, TGS_Func_In1<TS_FilePdfOpenPdf> pdf) {
+    public static void use(boolean enabled, TS_FileCommonConfig fileCommonConfig, Path localFile, TGS_Url remoteFile, TGS_FuncMTUCE_In1<TS_FilePdfOpenPdf> pdf) {
         var instance = new TS_FilePdfOpenPdf(enabled, localFile, remoteFile);
         try {
             instance.use_init(fileCommonConfig);
             pdf.run(instance);
         } catch (Exception e) {
-            TGS_UnSafe.throwIfInterruptedException(e);
+            TGS_FuncUtils.throwIfInterruptedException(e);
             instance.saveFile(e.getMessage());
             throw e;
         } finally {
@@ -156,7 +157,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        return TGS_UnSafe.call(() -> {
+        return TGS_FuncMTCEUtils.call(() -> {
             d.ci("addImagePDF");
             if (pdfTable == null && pdfCell == null) {
                 switch (left0_center1_right2) {
@@ -227,7 +228,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        return TGS_UnSafe.call(() -> {
+        return TGS_FuncMTCEUtils.call(() -> {
             d.ci("endTableCell");
             if (pdfTable == null) {
                 d.ce("endTableCell", "ERROR: table not exists error CODE_END_TABLECELL");
@@ -269,7 +270,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        return TGS_UnSafe.call(() -> {
+        return TGS_FuncMTCEUtils.call(() -> {
             d.ci("endTable");
             if (pdfTable == null) {
                 d.ce("ERROR:CODE_END_TABLE table not exists error ");
@@ -322,7 +323,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return false;
         }
         if (pdfTable == null && pdfCell == null) {
-            return TGS_UnSafe.call(() -> {
+            return TGS_FuncMTCEUtils.call(() -> {
                 pdf.addParagraphToPage(pdfParag);
                 pdfParag = null;
                 return true;

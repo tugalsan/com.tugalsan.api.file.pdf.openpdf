@@ -1,7 +1,7 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ public class TS_FilePdfOpenPdfUtilsPageExtract {
     public static void extract_old(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, Path pdfSrcFile, int pageNr, Path pdfDstFile) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, pdfDstFile, (docDst, pdfCopy) -> {
             TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, reader) -> {
-                TGS_UnSafe.run(() -> {
+                TGS_FuncMTCEUtils.run(() -> {
                     pdfCopy.addPage(pdfCopy.getImportedPage(reader, pageNr + 1));
                 });
             });
@@ -24,9 +24,9 @@ public class TS_FilePdfOpenPdfUtilsPageExtract {
         List<TGS_UnionExcuseVoid> results = new ArrayList();
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, pdfDstFile, (docDst, pdfCopy) -> {
             TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, reader) -> {
-                TGS_UnSafe.run(() -> {
+                TGS_FuncMTCEUtils.run(() -> {
                     Arrays.stream(pageNrs).forEach(pageNr -> {
-                        TGS_UnSafe.run(() -> {
+                        TGS_FuncMTCEUtils.run(() -> {
                             pdfCopy.addPage(pdfCopy.getImportedPage(reader, pageNr + 1));
                         }, e -> results.add(TGS_UnionExcuseVoid.ofExcuse(e)));
                     });

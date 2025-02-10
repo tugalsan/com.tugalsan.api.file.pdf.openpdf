@@ -3,7 +3,7 @@ package com.tugalsan.api.file.pdf.openpdf.server;
 import com.lowagie.text.pdf.PdfEncryptor;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.TGS_FuncUtils;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +73,7 @@ public class TS_FilePdfOpenPdfUtilsPermissions {
                     args[STRENGTH].equals("128"), moreInfo);
             System.out.println("Done.");
         } catch (Exception e) {
-            TGS_UnSafe.throwIfInterruptedException(e);
+            TGS_FuncUtils.throwIfInterruptedException(e);
             e.printStackTrace();
         }
     }

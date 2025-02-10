@@ -9,7 +9,7 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.TGS_FuncUtils;
 import java.io.FileOutputStream;
 
 public class TS_FilePdfOpenPdfUtilsPageHandout {
@@ -93,7 +93,7 @@ public class TS_FilePdfOpenPdfUtilsPageHandout {
                 // step 5: we close the document
                 document.close();
             } catch (Exception e) {
-                TGS_UnSafe.throwIfInterruptedException(e);
+                TGS_FuncUtils.throwIfInterruptedException(e);
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
             }
         }
