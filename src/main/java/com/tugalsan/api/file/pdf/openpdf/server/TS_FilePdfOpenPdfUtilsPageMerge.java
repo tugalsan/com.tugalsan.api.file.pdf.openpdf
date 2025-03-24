@@ -5,8 +5,8 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.SimpleBookmark;
 import com.tugalsan.api.thread.server.sync.TS_ThreadSyncLst;
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
-import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
-import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCEUtils;
+import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
+import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTUUtils;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +17,7 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
 
     public static TGS_UnionExcuseVoid merge(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, List<Path> srcFiles, Path dstFile) {
         return TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, dstFile, (dstDoc, copy) -> {
-            TGS_FuncMTCEUtils.run(() -> {
+            TGS_FuncMTCUtils.run(() -> {
                 var pageIdxOffset = new AtomicInteger(0);
                 TS_ThreadSyncLst<Map<String, Object>> masterBookmarkList = TS_ThreadSyncLst.ofSlowRead();
                 for (Path srcFile : srcFiles) {
@@ -25,7 +25,7 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
                         merge(copy, pageIdxOffset, masterBookmarkList, srcReader);
                     });
                     if (u_reader.isExcuse()) {
-                        TGS_FuncMTUCEUtils.thrw(u_reader.excuse());
+                        TGS_FuncMTUUtils.thrw(u_reader.excuse());
                     }
                 }
                 if (!masterBookmarkList.isEmpty()) {
@@ -36,7 +36,7 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
     }
 
     private static void merge(PdfCopy copy, AtomicInteger pageIdxOffset, TS_ThreadSyncLst<Map<String, Object>> masterBookmarkList, PdfReader srcReader) {
-        TGS_FuncMTCEUtils.run(() -> {
+        TGS_FuncMTCUtils.run(() -> {
             srcReader.consolidateNamedDestinations();
             var count = TS_FilePdfOpenPdfUtilsPage.count(srcReader);
             List<Map<String, Object>> bookmarks = SimpleBookmark.getBookmarkList(srcReader);
@@ -61,7 +61,7 @@ public class TS_FilePdfOpenPdfUtilsPageMerge {
             pdfSrcFiles.stream().forEachOrdered(srcFile -> {
                 TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(srcFile, (srcDoc, srcReader) -> {
                     IntStream.range(0, TS_FilePdfOpenPdfUtilsPage.count(srcReader)).forEachOrdered(pageIdx -> {
-                        TGS_FuncMTCEUtils.run(() -> {
+                        TGS_FuncMTCUtils.run(() -> {
                             pdfCopy.addPage(pdfCopy.getImportedPage(srcReader, (pageIdx + 1)));
                         });
                     });
