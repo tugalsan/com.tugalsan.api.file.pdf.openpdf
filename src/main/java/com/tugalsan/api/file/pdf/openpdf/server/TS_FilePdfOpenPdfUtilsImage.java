@@ -14,21 +14,44 @@ import com.tugalsan.api.shape.client.TGS_ShapeDimension;
 import com.tugalsan.api.union.client.TGS_UnionExcuse;
 import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
 import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
+import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsImage {
 
     private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsImage.class);
 
-    public static TGS_UnionExcuseVoid toPdf(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo_orNullForImageSize, Path dstPdf, float quality, List<Path> srcImages) {
-        return toPdf(cLvl, pageInfo_orNullForImageSize, dstPdf, quality, srcImages.toArray(Path[]::new));
+    public static TGS_UnionExcuseVoid toPdfFromImage(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl,
+            TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo_orNullForImageSize,
+            Path dstPdf, float quality, List<BufferedImage> srcImages) {
+        return toPdfFromImage(cLvl, pageInfo_orNullForImageSize, dstPdf, quality, srcImages.toArray(BufferedImage[]::new));
+    }
+
+    public static TGS_UnionExcuseVoid toPdfFromPath(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl,
+            TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo_orNullForImageSize,
+            Path dstPdf, float quality, List<Path> srcImages) {
+        return toPdfFromPath(cLvl, pageInfo_orNullForImageSize, dstPdf, quality, srcImages.toArray(Path[]::new));
     }
 
     //TS_FilePdfOpenPdfUtilsPage.PAGE_INFO_A4_PORT_0_0_0_0
-    public static TGS_UnionExcuseVoid toPdf(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo_orNullForImageSize, Path dstPdf, float quality, Path... srcImages) {
+    public static TGS_UnionExcuseVoid toPdfFromImage(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl,
+            TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo_orNullForImageSize,
+            Path dstPdf, float quality, BufferedImage... srcImages) {
+        var srcImagePaths = new Path[srcImages.length];
+        IntStream.range(0, srcImages.length).parallel().forEach(i -> {
+            srcImagePaths[i] = TS_FileImageUtils.toFileTemp(srcImages[i], quality, ".jpg");
+        });
+        return toPdfFromPath(cLvl, pageInfo_orNullForImageSize, dstPdf, quality, srcImagePaths);
+    }
+
+    //TS_FilePdfOpenPdfUtilsPage.PAGE_INFO_A4_PORT_0_0_0_0
+    public static TGS_UnionExcuseVoid toPdfFromPath(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl,
+            TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo_orNullForImageSize,
+            Path dstPdf, float quality, Path... srcImages) {
         if (pageInfo_orNullForImageSize == null) {
             return toPdf_useImageSize(cLvl, dstPdf, quality, srcImages);
         }
@@ -126,7 +149,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
                 }
             }
             d.ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":3", imgFile);
-            var u_file = toPdf(cLvl, pageInfo_orNullForImageSize, pdfFile, quality, imgFile);
+            var u_file = toPdfFromPath(cLvl, pageInfo_orNullForImageSize, pdfFile, quality, imgFile);
             d.ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":4", imgFile);
             if (u_file.isExcuse()) {
                 d.ce("toPdf_fromDir", "srcDir", srcDir, "#100", "isExcuse", imgFile, u_file.excuse().getMessage());
