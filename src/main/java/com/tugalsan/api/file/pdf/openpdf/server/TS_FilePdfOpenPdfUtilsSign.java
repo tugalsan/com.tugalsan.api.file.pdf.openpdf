@@ -9,20 +9,17 @@ import com.lowagie.text.pdf.PdfDate;
 import com.lowagie.text.pdf.PdfDictionary;
 import com.lowagie.text.pdf.PdfName;
 import com.lowagie.text.pdf.PdfPKCS7;
-import com.lowagie.text.pdf.PdfPKCS7.X509Name;
 import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfSignatureAppearance;
 import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfString;
 import com.lowagie.text.pdf.PdfWriter;
+import com.tugalsan.api.log.server.TS_Log;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -30,14 +27,24 @@ import java.util.List;
 import java.util.Map;
 
 public class TS_FilePdfOpenPdfUtilsSign {
-    public static void main(String[] args) {
+
+    private TS_FilePdfOpenPdfUtilsSign() {
+
+    }
+
+    private static TS_Log d() {
+        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsSign.class));
+    }
+    final private static StableValue<TS_Log> d = StableValue.of();
+
+    public static void test() {
         try {
             addUnverifiedSignature(true);
             addUnverifiedSignature(false);
             extractVerifiedCryptoSignature();
 
         } catch (DocumentException e) {
-            System.err.println(e.getMessage());
+            d().ce("test", e.getMessage());
         }
     }
 
@@ -45,27 +52,27 @@ public class TS_FilePdfOpenPdfUtilsSign {
         try {
             String visibility = visible ? "visible" : "invisible";
             String description = "Document with " + visibility + " signature";
-            System.out.println(description);
+            d().cr("addUnverifiedSignature", description);
 
-            Document document = new Document();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PdfWriter writer = PdfWriter.getInstance(document, baos);
+            var document = new Document();
+            var baos = new ByteArrayOutputStream();
+            var writer = PdfWriter.getInstance(document, baos);
             document.open();
             writer.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
 
             document.add(new Paragraph(description));
             document.close();
 
-            PdfReader reader = new PdfReader(baos.toByteArray());
+            var reader = new PdfReader(baos.toByteArray());
             // A verified signature would require a private key plus a valid certificate. see the JavaDoc of this
             // method for details
-            PdfStamper stp = PdfStamper.createSignature(reader, baos, '\0', null, true);
+            var stp = PdfStamper.createSignature(reader, baos, '\0', null, true);
 
-            Calendar signDate = Calendar.getInstance();
+            var signDate = Calendar.getInstance();
             stp.setEnforcedModificationDate(signDate);
 
-            PdfSignatureAppearance sap = stp.getSignatureAppearance();
-            PdfDictionary dic = new PdfDictionary();
+            var sap = stp.getSignatureAppearance();
+            var dic = new PdfDictionary();
             // self signed
             dic.put(PdfName.FILTER, PdfName.ADOBE_PPKLITE);
             dic.put(PdfName.M, new PdfDate(signDate));
@@ -81,63 +88,63 @@ public class TS_FilePdfOpenPdfUtilsSign {
             Map<PdfName, Integer> exc = new HashMap<>();
             exc.put(PdfName.CONTENTS, 10);
             sap.preClose(exc);
-            PdfDictionary update = new PdfDictionary();
+            var update = new PdfDictionary();
             update.put(PdfName.CONTENTS, new PdfString("aaaa").setHexWriting(true));
             sap.close(update);
 
-            String fileNamePrefix = visibility.substring(0, 1).toUpperCase() + visibility.substring(1);
-            FileOutputStream fos = new FileOutputStream(fileNamePrefix + "Signature.pdf");
+            var fileNamePrefix = visibility.substring(0, 1).toUpperCase() + visibility.substring(1);
+            var fos = new FileOutputStream(fileNamePrefix + "Signature.pdf");
             fos.write(baos.toByteArray());
             fos.close();
 
-            InputStream resultIS = new ByteArrayInputStream(baos.toByteArray());
-            PdfReader resultReader = new PdfReader(resultIS);
+            var resultIS = new ByteArrayInputStream(baos.toByteArray());
+            var resultReader = new PdfReader(resultIS);
 
-            AcroFields fields = resultReader.getAcroFields();
+            var fields = resultReader.getAcroFields();
 
             List<String> signatures = fields.getSignedFieldNames();
-            for (String signature : signatures) {
+            for (var signature : signatures) {
                 printSignatureDetails(fields, signature);
             }
         } catch (DocumentException | IOException e) {
-            System.err.println(e.getMessage());
+            d().ce("addUnverifiedSignature", e.getMessage());
         }
     }
 
     private static void extractVerifiedCryptoSignature() {
 
-        System.out.println("Signature extraction");
+        d().cr("extractVerifiedCryptoSignature", "Signature extraction");
 
         PdfPKCS7.loadCacertsKeyStore();
 
         try {
-            InputStream is = TS_FilePdfOpenPdfUtilsSign.class.getResourceAsStream("/CryptoSignedSha256.pdf");
-            PdfReader reader = new PdfReader(is);
-            AcroFields fields = reader.getAcroFields();
+            var is = TS_FilePdfOpenPdfUtilsSign.class.getResourceAsStream("/CryptoSignedSha256.pdf");
+            var reader = new PdfReader(is);
+            var fields = reader.getAcroFields();
 
             List<String> signatures = fields.getSignedFieldNames();
-            for (String signature : signatures) {
+            for (var signature : signatures) {
                 printSignatureDetails(fields, signature);
 
-                PdfPKCS7 pk = fields.verifySignature(signature);
+                var pk = fields.verifySignature(signature);
 
-                X509Certificate certificate = pk.getSigningCertificate();
-                X509Name subjectFields = PdfPKCS7.getSubjectFields(certificate);
-                System.out.println("Certificate subject fields: " + subjectFields);
-                System.out.println("Certificate verified: " + pk.verify());
+                var certificate = pk.getSigningCertificate();
+                var subjectFields = PdfPKCS7.getSubjectFields(certificate);
+                d().cr("extractVerifiedCryptoSignature", "Certificate subject fields: " + subjectFields);
+                d().cr("extractVerifiedCryptoSignature", "Certificate verified: " + pk.verify());
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                System.out.println("Date signed: " + sdf.format(pk.getSignDate().getTime()));
-                System.out.println("Timestamp verified: " + pk.verifyTimestampImprint());
+                var sdf = new SimpleDateFormat("yyyy-MM-dd");
+                d().cr("extractVerifiedCryptoSignature", "Date signed: " + sdf.format(pk.getSignDate().getTime()));
+                d().cr("extractVerifiedCryptoSignature", "Timestamp verified: " + pk.verifyTimestampImprint());
             }
         } catch (SignatureException | IOException | NoSuchAlgorithmException e) {
-            System.err.println(e.getMessage());
+            d().ce(e.getMessage());
         }
     }
 
     private static void printSignatureDetails(AcroFields fields, String signature) {
-        System.out.println("Signature: " + signature);
-        System.out.println("Signature covers whole document: " + fields.signatureCoversWholeDocument(signature));
-        System.out.println("Revision: " + fields.getRevision(signature));
+        d().cr("printSignatureDetails", "Signature: " + signature);
+        d().cr("printSignatureDetails", "Signature covers whole document: " + fields.signatureCoversWholeDocument(signature));
+        d().cr("printSignatureDetails", "Revision: " + fields.getRevision(signature));
     }
 }

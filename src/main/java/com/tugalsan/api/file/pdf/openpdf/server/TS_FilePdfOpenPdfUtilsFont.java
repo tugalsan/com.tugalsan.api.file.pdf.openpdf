@@ -9,6 +9,10 @@ import java.nio.file.Path;
 
 public class TS_FilePdfOpenPdfUtilsFont {
 
+    private TS_FilePdfOpenPdfUtilsFont() {
+
+    }
+
     private static volatile boolean WARMED_UP = false;
 
     public static Font craete(Path ttf, String alias, float size, boolean left_to_right, boolean bold, boolean italic, Color color) {

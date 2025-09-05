@@ -9,6 +9,10 @@ import java.util.List;
 
 public class TS_FilePdfOpenPdfUtilsPageExtract {
 
+    private TS_FilePdfOpenPdfUtilsPageExtract() {
+
+    }
+
     @Deprecated//OLD WAY
     public static void extract_old(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, Path pdfSrcFile, int pageNr, Path pdfDstFile) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, pdfDstFile, (docDst, pdfCopy) -> {

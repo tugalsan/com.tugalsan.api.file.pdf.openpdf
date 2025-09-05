@@ -16,7 +16,7 @@ import java.io.FileOutputStream;
 
 public class TS_FilePdfOpenPdfUtilsHeaderAndFooter extends PdfPageEventHelper {
 
-    public static void main(String[] args) throws DocumentException, FileNotFoundException {
+    public static void test(String[] args) throws DocumentException, FileNotFoundException {
         var document = new Document(PageSize.A4, 36, 36, 65, 36);
         var writer = PdfWriter.getInstance(document, new FileOutputStream("HeaderAndFooter.pdf"));
         writer.setPageEvent(new TS_FilePdfOpenPdfUtilsHeaderAndFooter());

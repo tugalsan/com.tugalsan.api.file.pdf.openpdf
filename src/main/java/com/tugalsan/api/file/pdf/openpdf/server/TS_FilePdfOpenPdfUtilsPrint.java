@@ -4,6 +4,10 @@ import com.tugalsan.api.os.server.TS_OsPlatformUtils;
 import java.io.IOException;
 
 public class TS_FilePdfOpenPdfUtilsPrint {
+    
+    private TS_FilePdfOpenPdfUtilsPrint(){
+        
+    }
 
     private static String acroread = null;
 
@@ -33,7 +37,7 @@ public class TS_FilePdfOpenPdfUtilsPrint {
             if (process != null && waitForTermination) {
                 process.waitFor();
             }
-        } catch (InterruptedException ignored) {
+        } catch (InterruptedException _) {
         }
         return process;
     }

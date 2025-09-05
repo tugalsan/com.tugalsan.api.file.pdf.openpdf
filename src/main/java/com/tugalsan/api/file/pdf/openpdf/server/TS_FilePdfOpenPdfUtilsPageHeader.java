@@ -7,6 +7,10 @@ import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsPageHeader {
 
+    private TS_FilePdfOpenPdfUtilsPageHeader() {
+
+    }
+
     public static void addHeader(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, Path pdfSrcFile, Path pdfDstFile) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, pdfReader) -> {
             TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, pdfDstFile, (dstDoc, pdfCopy) -> {

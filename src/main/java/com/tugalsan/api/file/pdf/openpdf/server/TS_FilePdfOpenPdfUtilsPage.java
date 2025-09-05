@@ -10,6 +10,10 @@ import java.nio.file.Path;
 
 public class TS_FilePdfOpenPdfUtilsPage {
 
+    private TS_FilePdfOpenPdfUtilsPage() {
+
+    }
+
     public static record PageInfo(int aX, boolean landscape, float marginLeft, float marginRight, float marginTop, float marginBottom) {
 
         public Rectangle toRectangle() {

@@ -5,21 +5,31 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.error_messages.MessageLocalization;
-import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 import com.tugalsan.api.function.client.TGS_FuncUtils;
+import com.tugalsan.api.log.server.TS_Log;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class TS_FilePdfOpenPdfUtilsPageHandout {
 
-    public static void main(String[] args) {
+    private TS_FilePdfOpenPdfUtilsPageHandout() {
+
+    }
+
+    private static TS_Log d() {
+        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsPageHandout.class));
+    }
+    final private static StableValue<TS_Log> d = StableValue.of();
+
+    public static void test(String[] args) {
         if (args.length != 3) {
-            System.err.println("arguments: srcfile destfile pages");
+            d().ce("arguments: srcfile destfile pages");
         } else {
             try {
-                int pages = Integer.parseInt(args[2]);
+                var pages = Integer.parseInt(args[2]);
                 if (pages < 2 || pages > 8) {
                     throw new DocumentException(MessageLocalization
                             .getComposedMessage("you.can.t.have.1.pages.on.one.page.minimum.2.maximum.8", pages));
@@ -37,24 +47,24 @@ public class TS_FilePdfOpenPdfUtilsPageHandout {
                 y1[0] = 812f;
                 y2[0] = 812f - height;
 
-                for (int i = 1; i < pages; i++) {
+                for (var i = 1; i < pages; i++) {
                     y1[i] = y2[i - 1] - 20f;
                     y2[i] = y1[i] - height;
                 }
 
                 // we create a reader for a certain document
-                PdfReader reader = new PdfReader(args[0]);
+                var reader = new PdfReader(args[0]);
                 // we retrieve the total number of pages
-                int n = reader.getNumberOfPages();
-                System.out.println("There are " + n + " pages in the original file.");
+                var n = reader.getNumberOfPages();
+                d().cr("There are " + n + " pages in the original file.");
 
                 // step 1: creation of a document-object
-                Document document = new Document(PageSize.A4);
+                var document = new Document(PageSize.A4);
                 // step 2: we create a writer that listens to the document
-                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(args[1]));
+                var writer = PdfWriter.getInstance(document, new FileOutputStream(args[1]));
                 // step 3: we open the document
                 document.open();
-                PdfContentByte cb = writer.getDirectContent();
+                var cb = writer.getDirectContent();
                 PdfImportedPage page;
                 int rotation;
                 int i = 0;
@@ -83,7 +93,7 @@ public class TS_FilePdfOpenPdfUtilsPageHandout {
                     }
                     cb.rectangle(x1 + dx, y2[p] + dy, rect.getWidth() * factor, rect.getHeight() * factor);
                     cb.stroke();
-                    System.out.println("Processed page " + i);
+                    d().cr("Processed page " + i);
                     p++;
                     if (p == pages) {
                         p = 0;
@@ -92,9 +102,9 @@ public class TS_FilePdfOpenPdfUtilsPageHandout {
                 }
                 // step 5: we close the document
                 document.close();
-            } catch (Exception e) {
+            } catch (DocumentException | IOException | NumberFormatException e) {
                 TGS_FuncUtils.throwIfInterruptedException(e);
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                d().ce(e.getClass().getName() + ": " + e.getMessage());
             }
         }
     }

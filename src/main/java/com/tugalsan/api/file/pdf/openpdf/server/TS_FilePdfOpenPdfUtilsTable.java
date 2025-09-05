@@ -9,41 +9,44 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.tugalsan.api.log.server.TS_Log;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class TS_FilePdfOpenPdfUtilsTable {
 
-    public static void main(String[] args) {
+    private TS_FilePdfOpenPdfUtilsTable() {
 
-        Font font8 = FontFactory.getFont(FontFactory.HELVETICA, 8);
+    }
 
-        // step 1
-        Document document = new Document(PageSize.A4);
+    private static TS_Log d() {
+        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsTable.class));
+    }
+    final private static StableValue<TS_Log> d = StableValue.of();
 
-        try {
+    public static void test() {
+        try (var document = new Document(PageSize.A4)) {
             // step 2
-            PdfWriter writer = PdfWriter.getInstance(document,
+            var writer = PdfWriter.getInstance(document,
                     new FileOutputStream("tables.pdf"));
             float width = document.getPageSize().getWidth();
             float height = document.getPageSize().getHeight();
             // step 3
             document.open();
 
+            var font8 = FontFactory.getFont(FontFactory.HELVETICA, 8);
             // step 4
             float[] columnDefinitionSize = {33.33F, 33.33F, 33.33F};
 
             float pos = height / 2;
-            PdfPTable table = null;
-            PdfPCell cell = null;
 
-            table = new PdfPTable(columnDefinitionSize);
+            var table = new PdfPTable(columnDefinitionSize);
             table.getDefaultCell().setBorder(0);
             table.setHorizontalAlignment(0);
             table.setTotalWidth(width - 72);
             table.setLockedWidth(true);
 
-            cell = new PdfPCell(new Phrase("Table added with document.add()"));
+            var cell = new PdfPCell(new Phrase("Table added with document.add()"));
             cell.setColspan(columnDefinitionSize.length);
             table.addCell(cell);
             table.addCell(new Phrase("Louis Pasteur", font8));
@@ -79,9 +82,7 @@ public class TS_FilePdfOpenPdfUtilsTable {
 
             table.writeSelectedRows(0, -1, 50, pos, writer.getDirectContent());
         } catch (DocumentException | IOException de) {
-            System.err.println(de.getMessage());
+            d().ce(de.getMessage());
         }
-        // step 5
-        document.close();
     }
 }

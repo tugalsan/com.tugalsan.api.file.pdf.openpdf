@@ -10,8 +10,11 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 @Deprecated //HOW about using com.tugalsan.api.file.pdf.pdfbox3.server.TS_FilePdfBox3UtilsHtml.toPdf(Path srcHTM, Path dstPDF)
 public class TS_FilePdfOpenPdfUtilsHtml {
 
-//    final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsHtml.class);
+    private TS_FilePdfOpenPdfUtilsHtml() {
 
+    }
+
+//    final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsHtml.class);
     public static TGS_UnionExcuseVoid toPdf(Path pathHtmlInput, Path pathPdfOutput) {
         return TGS_FuncMTCUtils.call(() -> {
             var html = new String(Files.readAllBytes(pathHtmlInput));

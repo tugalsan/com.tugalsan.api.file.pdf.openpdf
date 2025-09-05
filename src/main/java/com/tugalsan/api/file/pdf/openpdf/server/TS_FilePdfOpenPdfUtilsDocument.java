@@ -19,6 +19,10 @@ import java.nio.file.Path;
 
 public class TS_FilePdfOpenPdfUtilsDocument {
 
+    private TS_FilePdfOpenPdfUtilsDocument() {
+
+    }
+
     public static TGS_UnionExcuseVoid run_doc_with_copy(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, Path dstPdf, TGS_FuncMTU_In2<Document, PdfCopy> doc_copy) {
         return TGS_FuncMTCUtils.call(() -> {
             try (var os = Files.newOutputStream(dstPdf)) {

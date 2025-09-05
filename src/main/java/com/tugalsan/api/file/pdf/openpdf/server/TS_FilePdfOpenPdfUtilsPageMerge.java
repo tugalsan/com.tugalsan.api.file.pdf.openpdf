@@ -15,12 +15,16 @@ import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsPageMerge {
 
+    private TS_FilePdfOpenPdfUtilsPageMerge() {
+
+    }
+
     public static TGS_UnionExcuseVoid merge(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, List<Path> srcFiles, Path dstFile) {
         return TS_FilePdfOpenPdfUtilsDocument.run_doc_with_copy(cLvl, dstFile, (dstDoc, copy) -> {
             TGS_FuncMTCUtils.run(() -> {
                 var pageIdxOffset = new AtomicInteger(0);
                 TS_ThreadSyncLst<Map<String, Object>> masterBookmarkList = TS_ThreadSyncLst.ofSlowRead();
-                for (Path srcFile : srcFiles) {
+                for (var srcFile : srcFiles) {
                     var u_reader = TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(srcFile, (srcDoc, srcReader) -> {
                         merge(copy, pageIdxOffset, masterBookmarkList, srcReader);
                     });

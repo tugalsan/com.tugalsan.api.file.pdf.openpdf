@@ -13,6 +13,10 @@ import java.util.Map;
 
 public class TS_FilePdfOpenPdfUtilsInfo {
 
+    private TS_FilePdfOpenPdfUtilsInfo() {
+
+    }
+
     public static record Info(String title, String author, String subject, String producer, TGS_Time dateCreate, TGS_Time dateModified) {
 
         public Info      {

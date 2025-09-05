@@ -9,32 +9,37 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfString;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.parser.PdfTextExtractor;
+import com.tugalsan.api.log.server.TS_Log;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class TS_FilePdfOpenPdfUtilsTextExtract {
 
-    public static void main(String[] args) {
+    private TS_FilePdfOpenPdfUtilsTextExtract() {
 
-        System.out.println("Text extraction");
+    }
 
+    private static TS_Log d() {
+        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsTextExtract.class));
+    }
+    final private static StableValue<TS_Log> d = StableValue.of();
+
+    public static void test() {
+        d().cr("Text extraction");
         // step 1: create a document object
-        Document document = new Document();
-
+        var document = new Document();
         // step 2: write some text to the document
-        ByteArrayOutputStream baos = writeTextToDocument(document);
-
+        var baos = writeTextToDocument(document);
         try {
             // step 3: extract the text
-            PdfReader reader = new PdfReader(baos.toByteArray());
-            PdfTextExtractor pdfTextExtractor = new PdfTextExtractor(reader);
-            System.out.println("Page 1 text: " + pdfTextExtractor.getTextFromPage(1));
-            System.out.println("Page 2 text: " + pdfTextExtractor.getTextFromPage(2));
-            System.out.println("Page 3 table cell text: " + pdfTextExtractor.getTextFromPage(3));
-
+            var reader = new PdfReader(baos.toByteArray());
+            var pdfTextExtractor = new PdfTextExtractor(reader);
+            d().cr("Page 1 text: " + pdfTextExtractor.getTextFromPage(1));
+            d().cr("Page 2 text: " + pdfTextExtractor.getTextFromPage(2));
+            d().cr("Page 3 table cell text: " + pdfTextExtractor.getTextFromPage(3));
         } catch (DocumentException | IOException de) {
-            System.err.println(de.getMessage());
+            d().ce(de.getMessage());
         }
     }
 
@@ -42,29 +47,24 @@ public class TS_FilePdfOpenPdfUtilsTextExtract {
         ByteArrayOutputStream baos = null;
         try {
             baos = new ByteArrayOutputStream();
-            PdfWriter writer = PdfWriter.getInstance(document, baos);
+            var writer = PdfWriter.getInstance(document, baos);
             document.open();
             writer.getInfo().put(PdfName.CREATOR, new PdfString(Document.getVersion()));
             document.add(new Paragraph("Text to extract"));
-
             document.newPage();
             document.add(new Paragraph("Text on page 2"));
-
             document.newPage();
-            PdfPTable table = new PdfPTable(3);
+            var table = new PdfPTable(3);
             table.addCell("Cell 1");
             table.addCell("Cell 2");
             table.addCell("Cell 3");
             document.add(table);
-
             document.close();
-
-            FileOutputStream fos = new FileOutputStream("TextExtraction.pdf");
-            fos.write(baos.toByteArray());
-            fos.close();
-
+            try (var fos = new FileOutputStream("TextExtraction.pdf");) {
+                fos.write(baos.toByteArray());
+            }
         } catch (DocumentException | IOException de) {
-            System.err.println(de.getMessage());
+            d().ce(de.getMessage());
         }
         return baos;
     }

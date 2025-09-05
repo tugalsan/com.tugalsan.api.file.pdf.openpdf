@@ -29,14 +29,16 @@ import java.util.stream.IntStream;
 @Deprecated //TODO: Whole com.tugalsan.api.file.pdf.openpdf project will be deprecated, If I can able to migrate this class to com.tugalsan.api.file.pdf.pdfbox3.server.TS_FilePdfBox3FileCommon
 public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
 
-    final private static TS_Log d = TS_Log.of(false, TS_FilePdfOpenPdf.class);
-
+    private static TS_Log d() {
+        return d.orElse(TS_Log.of(TS_FilePdfOpenPdf.class));
+    }
+    final private static StableValue<TS_Log> d = StableValue.of();
     @Override
     public String getSuperClassName() {
-        return d.className;
+        return d().className;
     }
 
-    public TS_FilePdfOpenPdfUtils pdf;
+    public TS_FilePdfOpenPdfDriver pdfDriver;
     public PdfPTable pdfTable = null;
     public PdfPCell pdfCell = null;
     public Paragraph pdfParag = null;
@@ -89,13 +91,13 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
 //                        getFontFrom(0.8f, fontIdx, true, true)
 //                ))
 //        );
-        pdf = new TS_FilePdfOpenPdfUtils(localFile);
+        pdfDriver = new TS_FilePdfOpenPdfDriver(localFile);
         setFontStyle();
     }
 
     private Font getFontFrom(float k_half, int fontIdx, boolean bold, boolean italic) {
         var k_file = 1f;
-        return TS_FilePdfOpenPdfUtils.getFontFrom(
+        return TS_FilePdfOpenPdfDriver.getFontFrom(
                 (int) (fileCommonConfig.fontHeight * k_half),
                 bold, italic, pdfFontColor,
                 fileCommonConfig.fontFamilyPaths.get(fontIdx).regular(),
@@ -108,15 +110,15 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
         setClosed();
-        d.ci("saveFile", "saveFile.PDF->");
-        if (pdf == null) {
-            d.ci("saveFile", "PDF File is null");
+        d().ci("saveFile", "saveFile.PDF->");
+        if (pdfDriver == null) {
+            d().ci("saveFile", "PDF File is null");
         } else {
-            pdf.close();
+            pdfDriver.close();
             if (TS_FileUtils.isExistFile(localFile)) {
-                d.ci("saveFile", "successfull");
+                d().ci("saveFile", "successfull");
             } else {
-                d.ce("saveFile", "failed");
+                d().ce("saveFile", "failed");
             }
         }
         return errorSource == null;
@@ -127,7 +129,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return;
         }
-        pdf.skipCloseFix = true;
+        pdfDriver.skipCloseFix = true;
     }
 
     @Override
@@ -135,8 +137,8 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("createNewPage", "createNewPage.INFO: MIFPDF.createNewPage");
-        pdf.createNewPage(pageSizeAX, landscape, marginLeft, marginRight, marginTop, marginBottom);
+        d().ci("createNewPage", "createNewPage.INFO: MIFPDF.createNewPage");
+        pdfDriver.createNewPage(pageSizeAX, landscape, marginLeft, marginRight, marginTop, marginBottom);
         return true;
     }
 
@@ -146,9 +148,9 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
 //        d.infoEnable = true;
-        d.ci("addImage", "init", pstImageLoc);
+        d().ci("addImage", "init", pstImageLoc);
         var result = addImagePDF(pstImage, textWrap, left0_center1_right2);
-        d.ci("addImage", "fin");
+        d().ci("addImage", "fin");
 //        d.infoEnable = false;
         return result;
     }
@@ -158,40 +160,40 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
         return TGS_FuncMTCUtils.call(() -> {
-            d.ci("addImagePDF");
+            d().ci("addImagePDF");
             if (pdfTable == null && pdfCell == null) {
                 switch (left0_center1_right2) {
                     case 0 ->
-                        pdf.addImageToPageLeft(pstImage, textWrap, true);
+                        pdfDriver.addImageToPageLeft(pstImage, textWrap, true);
                     case 1 ->
-                        pdf.addImageToPageCenter(pstImage, textWrap, true);
+                        pdfDriver.addImageToPageCenter(pstImage, textWrap, true);
                     default ->
-                        pdf.addImageToPageRight(pstImage, textWrap, true);
+                        pdfDriver.addImageToPageRight(pstImage, textWrap, true);
                 }
             } else if (pdfTable != null && pdfCell == null) {
-                d.ce("addImagePDF", "ERROR: cell not exits error ");
-                d.ce("addImagePDF", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
-                d.ce("addImagePDF", "compile_INSERT_IMAGE_COMMON cell not exits error ");
+                d().ce("addImagePDF", "ERROR: cell not exits error ");
+                d().ce("addImagePDF", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d().ce("addImagePDF", "compile_INSERT_IMAGE_COMMON cell not exits error ");
                 return false;
             } else if (pdfTable == null && pdfCell != null) {
-                d.ce("addImagePDF", "ERROR: table not exits error ");
-                d.ce("addImagePDF", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
-                d.ce("addImagePDF", "compile_INSERT_IMAGE_COMMON table not exits error ");
+                d().ce("addImagePDF", "ERROR: table not exits error ");
+                d().ce("addImagePDF", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d().ce("addImagePDF", "compile_INSERT_IMAGE_COMMON table not exits error ");
                 return false;
             } else if (pdfTable != null && pdfCell != null) {
                 switch (left0_center1_right2) {
                     case 0 -> //TODO FIX CELL IMG SİZE
-                        pdf.addImageToCellLeft(pdfCell, pstImage, textWrap, true);
+                        pdfDriver.addImageToCellLeft(pdfCell, pstImage, textWrap, true);
                     case 1 ->
-                        pdf.addImageToCellCenter(pdfCell, pstImage, textWrap, true);
+                        pdfDriver.addImageToCellCenter(pdfCell, pstImage, textWrap, true);
                     default ->
-                        pdf.addImageToCellRight(pdfCell, pstImage, textWrap, true);
+                        pdfDriver.addImageToCellRight(pdfCell, pstImage, textWrap, true);
                 }
             }
-            d.ci("addImagePDF", "addImagePDF is ok");
+            d().ci("addImagePDF", "addImagePDF is ok");
             return true;
         }, e -> {
-            d.ct("addImagePDF", e);
+            d().ct("addImagePDF", e);
             return false;
         });
     }
@@ -201,15 +203,15 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("beginTableCell");
+        d().ci("beginTableCell");
         if (pdfTable == null) {
-            d.ce("beginTableCell", "ERROR: table not exists error ");
-            d.ce("beginTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d().ce("beginTableCell", "ERROR: table not exists error ");
+            d().ce("beginTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         if (pdfCell != null) {
-            d.ce("beginTableCell", "ERROR: cell already exists error ");
-            d.ce("beginTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d().ce("beginTableCell", "ERROR: cell already exists error ");
+            d().ce("beginTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         pdfCell = new PdfPCell();
@@ -229,22 +231,22 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
         return TGS_FuncMTCUtils.call(() -> {
-            d.ci("endTableCell");
+            d().ci("endTableCell");
             if (pdfTable == null) {
-                d.ce("endTableCell", "ERROR: table not exists error CODE_END_TABLECELL");
-                d.ce("endTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d().ce("endTableCell", "ERROR: table not exists error CODE_END_TABLECELL");
+                d().ce("endTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
                 return false;
             }
             if (pdfCell == null) {
-                d.ce("endTableCell", "ERROR: cell not exists error CODE_END_TABLECELL");
-                d.ce("endTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d().ce("endTableCell", "ERROR: cell not exists error CODE_END_TABLECELL");
+                d().ce("endTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
                 return false;
             }
-            pdf.addCellToTable(pdfTable, pdfCell, rotationInDegrees_0_90_180_270);
+            pdfDriver.addCellToTable(pdfTable, pdfCell, rotationInDegrees_0_90_180_270);
             pdfCell = null;
             return true;
         }, e -> {
-            d.ct("endTableCell", e);
+            d().ct("endTableCell", e);
             return false;
         });
     }
@@ -254,13 +256,13 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("beginTable");
+        d().ci("beginTable");
         if (pdfTable != null) {
-            d.ce("ERROR:CODE_BEGIN_TABLE table already exists error ");
-            d.ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d().ce("ERROR:CODE_BEGIN_TABLE table already exists error ");
+            d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
-        pdfTable = pdf.createTable(relColSizes);
+        pdfTable = pdfDriver.createTable(relColSizes);
         pdfTable.setWidthPercentage(100);
         return true;
     }
@@ -271,17 +273,17 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
         return TGS_FuncMTCUtils.call(() -> {
-            d.ci("endTable");
+            d().ci("endTable");
             if (pdfTable == null) {
-                d.ce("ERROR:CODE_END_TABLE table not exists error ");
-                d.ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d().ce("ERROR:CODE_END_TABLE table not exists error ");
+                d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
                 return false;
             }
-            pdf.addTableToPage(pdfTable);
+            pdfDriver.addTableToPage(pdfTable);
             pdfTable = null;
             return true;
         }, e -> {
-            d.ct("endTable", e);
+            d().ct("endTable", e);
             return false;
         });
     }
@@ -291,22 +293,22 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("beginText");
+        d().ci("beginText");
         if (pdfParag != null) {
-            d.ce("ERROR:CODE_BEGIN_TEXT paragraph already exits error ");
-            d.ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d().ce("ERROR:CODE_BEGIN_TEXT paragraph already exits error ");
+            d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
-        pdfParag = pdf.createParagraph(pdfFont);
+        pdfParag = pdfDriver.createParagraph(pdfFont);
         switch (allign_Left0_center1_right2_just3) {
             case 3 ->
-                pdf.setAlignLeft(pdfParag);
+                pdfDriver.setAlignLeft(pdfParag);
             case 2 ->
-                pdf.setAlignRight(pdfParag);
+                pdfDriver.setAlignRight(pdfParag);
             case 1 ->
-                pdf.setAlignCenter(pdfParag);
+                pdfDriver.setAlignCenter(pdfParag);
             default ->
-                pdf.setAlignLeft(pdfParag);
+                pdfDriver.setAlignLeft(pdfParag);
         }
         return true;
     }
@@ -316,30 +318,30 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("endText");
+        d().ci("endText");
         if (pdfParag == null) {
-            d.ce("ERROR:paragraph not exits error ");
-            d.ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d().ce("ERROR:paragraph not exits error ");
+            d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         if (pdfTable == null && pdfCell == null) {
             return TGS_FuncMTCUtils.call(() -> {
-                pdf.addParagraphToPage(pdfParag);
+                pdfDriver.addParagraphToPage(pdfParag);
                 pdfParag = null;
                 return true;
             }, e -> {
-                d.ce("endText", e);
+                d().ce("endText", e);
                 return false;
             });
         }
         if (pdfTable != null && pdfCell == null) {
-            d.ce("endText", "ERROR:cell not exits error ");
-            d.ce("endText", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d().ce("endText", "ERROR:cell not exits error ");
+            d().ce("endText", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         if (pdfTable == null && pdfCell != null) {
-            d.ce("endText", "ERROR:table not exits error ");
-            d.ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d().ce("endText", "ERROR:table not exits error ");
+            d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         if (pdfTable != null && pdfCell != null) {
@@ -354,10 +356,10 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("addText", text);
+        d().ci("addText", text);
         if (pdfParag == null) {
-            d.ce("addText", "ERROR:paragraph not exits error ");
-            d.ce("addText", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d().ce("addText", "ERROR:paragraph not exits error ");
+            d().ce("addText", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return true;
         }
         var lines = TGS_StringUtils.jre().toList(text, "\n");
@@ -372,13 +374,13 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
     }
 
     public void addText_line(String line) {
-        d.ci("addText", "line", line);
+        d().ci("addText", "line", line);
         if (line.isEmpty()) {
             return;
         }
         if (!TGS_StringDouble.may(line)) {
-            d.ci("addText", "line", "addTextToParagraph", "mayNot", line);
-            pdf.addTextToParagraph(line, pdfParag, pdfFont);
+            d().ci("addText", "line", "addTextToParagraph", "mayNot", line);
+            pdfDriver.addTextToParagraph(line, pdfParag, pdfFont);
             return;
         }
         var tags = TGS_StringUtils.jre().toList_spc(line);
@@ -386,15 +388,15 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             var tag = tags.get(j);
             var dbl = TGS_StringDouble.of(line);
             if (dbl.isExcuse()) {
-                pdf.addTextToParagraph(tag, pdfParag, pdfFont);
-                d.ci("addText", "line", "addTextToParagraph", "mayEmpty", line);
+                pdfDriver.addTextToParagraph(tag, pdfParag, pdfFont);
+                d().ci("addText", "line", "addTextToParagraph", "mayEmpty", line);
             } else {
-                d.ci("addText", "line", "addTextToParagraph", "mayDbl", line);
-                pdf.addTextToParagraph(String.valueOf(dbl.value().left), pdfParag, pdfFont);
-                pdf.addTextToParagraph(String.valueOf(dbl.value().dim()) + String.valueOf(dbl.value().right), pdfParag, pdfFont_half);
+                d().ci("addText", "line", "addTextToParagraph", "mayDbl", line);
+                pdfDriver.addTextToParagraph(String.valueOf(dbl.value().left), pdfParag, pdfFont);
+                pdfDriver.addTextToParagraph(String.valueOf(dbl.value().dim()) + String.valueOf(dbl.value().right), pdfParag, pdfFont_half);
             }
             if (tags.size() - 1 != j) {
-                pdf.addTextToParagraph(" ", pdfParag, pdfFont);
+                pdfDriver.addTextToParagraph(" ", pdfParag, pdfFont);
             }
         });
     }
@@ -404,13 +406,13 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("addLineBreak");
+        d().ci("addLineBreak");
         if (pdfParag == null) {
-            d.ce("addLineBreak", "ERROR:paragraph not exits error ");
-            d.ce("addLineBreak", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d().ce("addLineBreak", "ERROR:paragraph not exits error ");
+            d().ce("addLineBreak", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
-        pdf.addLineSeperatorParagraph(pdfParag);
+        pdfDriver.addLineSeperatorParagraph(pdfParag);
         return true;
     }
 
@@ -419,7 +421,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("setFontStyle");
+        d().ci("setFontStyle");
 //        pdfFont = TGS_FuncEffectivelyFinal.of(Font.class).coronateAs(__ -> {
 //            var family = fontFamilyFonts_pdf.get(fileCommonConfig.fontFamilyIdx);
 //            if (fileCommonConfig.fontBold && fileCommonConfig.fontItalic) {
@@ -466,7 +468,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("setFontSize");
+        d().ci("setFontSize");
         return setFontStyle();
     }
 
@@ -475,33 +477,33 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d.ci("setFontColor");
+        d().ci("setFontColor");
         if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_BLACK())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_BLACK();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_BLACK();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_BLUE())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_BLUE();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_BLUE();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_CYAN())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_CYAN();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_CYAN();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_DARK_GRAY())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_DARK_GRAY();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_DARK_GRAY();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_GRAY())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_GRAY();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_GRAY();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_GREEN())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_GREEN();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_GREEN();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_LIGHT_GRAY())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_LIGHT_GRAY();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_LIGHT_GRAY();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_MAGENTA())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_MAGENTA();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_MAGENTA();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_ORANGE())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_ORANGE();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_ORANGE();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_PINK())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_PINK();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_PINK();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_RED())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_RED();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_RED();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_YELLOW())) {
-            pdfFontColor = TS_FilePdfOpenPdfUtils.getFONT_COLOR_YELLOW();
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_YELLOW();
         } else {
-            d.ce("setFontColor", "ERROR: CODE_SET_FONT_COLOR code token[1] error!");
+            d().ce("setFontColor", "ERROR: CODE_SET_FONT_COLOR code token[1] error!");
             return false;
         }
         setFontStyle();

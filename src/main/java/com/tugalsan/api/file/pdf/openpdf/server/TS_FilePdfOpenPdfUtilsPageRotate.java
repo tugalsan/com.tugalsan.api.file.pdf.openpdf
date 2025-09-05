@@ -10,6 +10,10 @@ import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsPageRotate {
 
+    private TS_FilePdfOpenPdfUtilsPageRotate() {
+
+    }
+
     public static void rotate(Path pdfSrcFile, Path pdfDstFile, int degree) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, pdfReader) -> {
             TGS_FuncMTCUtils.run(() -> {

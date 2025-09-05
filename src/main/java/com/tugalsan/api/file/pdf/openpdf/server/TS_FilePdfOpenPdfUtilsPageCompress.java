@@ -11,6 +11,10 @@ import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsPageCompress {
 
+    private TS_FilePdfOpenPdfUtilsPageCompress() {
+
+    }
+
     public static enum CompressionLevel {
         BEST, NORMAL, NONE
     }

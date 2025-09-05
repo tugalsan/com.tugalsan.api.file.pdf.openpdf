@@ -8,6 +8,10 @@ import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsPageScale {
 
+    private TS_FilePdfOpenPdfUtilsPageScale() {
+
+    }
+
     public static void scale(Path pdfSrcFile, Path pdfDstFile, float scaleFactor) {
         TS_FilePdfOpenPdfUtilsDocument.run_doc_with_reader(pdfSrcFile, (srcDoc, pdfReader) -> {
             TGS_FuncMTCUtils.run(() -> {
