@@ -12,6 +12,7 @@ import com.tugalsan.api.function.client.TGS_FuncUtils;
 import com.tugalsan.api.log.server.TS_Log;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.function.Supplier;
 
 public class TS_FilePdfOpenPdfUtilsPageHandout {
 
@@ -19,14 +20,11 @@ public class TS_FilePdfOpenPdfUtilsPageHandout {
 
     }
 
-    private static TS_Log d() {
-        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsPageHandout.class));
-    }
-    final private static StableValue<TS_Log> d = StableValue.of();
+    final private static Supplier<TS_Log> d = StableValue.supplier(() -> TS_Log.of(TS_FilePdfOpenPdfUtilsPageHandout.class));
 
     public static void test(String[] args) {
         if (args.length != 3) {
-            d().ce("arguments: srcfile destfile pages");
+            d.get().ce("arguments: srcfile destfile pages");
         } else {
             try {
                 var pages = Integer.parseInt(args[2]);
@@ -56,7 +54,7 @@ public class TS_FilePdfOpenPdfUtilsPageHandout {
                 var reader = new PdfReader(args[0]);
                 // we retrieve the total number of pages
                 var n = reader.getNumberOfPages();
-                d().cr("There are " + n + " pages in the original file.");
+                d.get().cr("There are " + n + " pages in the original file.");
 
                 // step 1: creation of a document-object
                 var document = new Document(PageSize.A4);
@@ -93,7 +91,7 @@ public class TS_FilePdfOpenPdfUtilsPageHandout {
                     }
                     cb.rectangle(x1 + dx, y2[p] + dy, rect.getWidth() * factor, rect.getHeight() * factor);
                     cb.stroke();
-                    d().cr("Processed page " + i);
+                    d.get().cr("Processed page " + i);
                     p++;
                     if (p == pages) {
                         p = 0;
@@ -104,7 +102,7 @@ public class TS_FilePdfOpenPdfUtilsPageHandout {
                 document.close();
             } catch (DocumentException | IOException | NumberFormatException e) {
                 TGS_FuncUtils.throwIfInterruptedException(e);
-                d().ce(e.getClass().getName() + ": " + e.getMessage());
+                d.get().ce(e.getClass().getName() + ": " + e.getMessage());
             }
         }
     }

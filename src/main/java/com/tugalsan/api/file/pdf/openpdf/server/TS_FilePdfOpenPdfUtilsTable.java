@@ -12,6 +12,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.tugalsan.api.log.server.TS_Log;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.function.Supplier;
 
 public class TS_FilePdfOpenPdfUtilsTable {
 
@@ -19,10 +20,7 @@ public class TS_FilePdfOpenPdfUtilsTable {
 
     }
 
-    private static TS_Log d() {
-        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsTable.class));
-    }
-    final private static StableValue<TS_Log> d = StableValue.of();
+    final private static Supplier<TS_Log> d = StableValue.supplier(() -> TS_Log.of(TS_FilePdfOpenPdfUtilsTable.class));
 
     public static void test() {
         try (var document = new Document(PageSize.A4)) {
@@ -82,7 +80,7 @@ public class TS_FilePdfOpenPdfUtilsTable {
 
             table.writeSelectedRows(0, -1, 50, pos, writer.getDirectContent());
         } catch (DocumentException | IOException de) {
-            d().ce(de.getMessage());
+            d.get().ce(de.getMessage());
         }
     }
 }

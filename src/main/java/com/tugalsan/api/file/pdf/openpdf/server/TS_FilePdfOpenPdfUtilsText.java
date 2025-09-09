@@ -10,6 +10,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
 import com.tugalsan.api.log.server.TS_Log;
 import java.io.IOException;
+import java.util.function.Supplier;
 
 public class TS_FilePdfOpenPdfUtilsText {
 
@@ -17,15 +18,12 @@ public class TS_FilePdfOpenPdfUtilsText {
 
     }
 
-    private static TS_Log d() {
-        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsText.class));
-    }
-    final private static StableValue<TS_Log> d = StableValue.of();
+    final private static Supplier<TS_Log> d = StableValue.supplier(() -> TS_Log.of(TS_FilePdfOpenPdfUtilsText.class));
 
     public static void test() {
-        d().cr("the Paragraph object");
+        d.get().cr("the Paragraph object");
         // step 1: creation of a document-object
-        try (var document = new Document()){
+        try (var document = new Document()) {
             // step 2:
             // we create a writer that listens to the document
             PdfWriter.getInstance(document, new FileOutputStream("Paragraphs.pdf"));
@@ -52,7 +50,7 @@ public class TS_FilePdfOpenPdfUtilsText {
                     FontFactory.getFont(FontFactory.HELVETICA, 12));
             document.add(p3);
         } catch (DocumentException | IOException de) {
-            d().ce(de.getMessage());
+            d.get().ce(de.getMessage());
         }
     }
 

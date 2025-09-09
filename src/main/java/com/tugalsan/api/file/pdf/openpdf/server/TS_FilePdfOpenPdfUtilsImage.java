@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 public class TS_FilePdfOpenPdfUtilsImage {
@@ -27,10 +28,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
 
     }
 
-    private static TS_Log d() {
-        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsImage.class));
-    }
-    final private static StableValue<TS_Log> d = StableValue.of();
+    final private static Supplier<TS_Log> d = StableValue.supplier(() -> TS_Log.of(TS_FilePdfOpenPdfUtilsImage.class));
 
     public static TGS_UnionExcuseVoid toPdfFromImage(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl,
             TS_FilePdfOpenPdfUtilsPage.PageInfo pageInfo_orNullForImageSize,
@@ -97,7 +95,7 @@ public class TS_FilePdfOpenPdfUtilsImage {
 
     private static TGS_UnionExcuseVoid toPdf_useImageSize(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, Path dstPdf, float quality, Path... srcImages) {
         if (srcImages == null || srcImages.length == 0) {
-            return TGS_UnionExcuseVoid.ofExcuse(d().className, "toPdf_protectImageSize", "srcImages == null || srcImages.length == 0");
+            return TGS_UnionExcuseVoid.ofExcuse(d.get().className, "toPdf_protectImageSize", "srcImages == null || srcImages.length == 0");
         }
         return TGS_FuncMTCUtils.call(() -> {
             var pdfImageFirst = Image.getInstance(srcImages[0].toAbsolutePath().toString());
@@ -138,78 +136,78 @@ public class TS_FilePdfOpenPdfUtilsImage {
         if (pageInfo_orNullForImageSize == null) {
             return toPdf_fromDir_useImageSize(cLvl, srcDir, quality, skipIfExists, deleteIMGAfterConversion);
         }
-        d().ci("toPdf_fromDir", "srcDir", srcDir, "#10");
+        d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#10");
         var subFiles = TS_DirectoryUtils.subFiles(srcDir, null, false, false);
-        d().ci("toPdf_fromDir", "srcDir", srcDir, "#20");
+        d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#20");
         List<TGS_UnionExcuse<Path>> convertedFiles = new ArrayList();
-        d().ci("toPdf_fromDir", "srcDir", srcDir, "#30");
+        d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#30");
         subFiles.stream().filter(subFile -> isSupported(subFile)).forEach(imgFile -> {
-            d().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":1", imgFile);
+            d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":1", imgFile);
             var pdfFile = imgFile.resolveSibling(TS_FileUtils.getNameLabel(imgFile) + ".pdf");
-            d().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":2", imgFile);
+            d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":2", imgFile);
             if (TS_FileUtils.isExistFile(pdfFile)) {
                 if (skipIfExists) {
-                    d().ci("toPdf_fromDir", "srcDir", srcDir, "#100", "skipIfExists", imgFile);
+                    d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#100", "skipIfExists", imgFile);
                     return;
                 } else {
                     TS_FileUtils.deleteFileIfExists(pdfFile);
                 }
             }
-            d().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":3", imgFile);
+            d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":3", imgFile);
             var u_file = toPdfFromPath(cLvl, pageInfo_orNullForImageSize, pdfFile, quality, imgFile);
-            d().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":4", imgFile);
+            d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":4", imgFile);
             if (u_file.isExcuse()) {
-                d().ce("toPdf_fromDir", "srcDir", srcDir, "#100", "isExcuse", imgFile, u_file.excuse().getMessage());
+                d.get().ce("toPdf_fromDir", "srcDir", srcDir, "#100", "isExcuse", imgFile, u_file.excuse().getMessage());
                 convertedFiles.add(u_file.toExcuse());
             } else {
-                d().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":5", imgFile);
+                d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":5", imgFile);
                 convertedFiles.add(TGS_UnionExcuse.of(pdfFile));
             }
-            d().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":6", imgFile);
+            d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":6", imgFile);
             if (deleteIMGAfterConversion) {
                 TS_FileUtils.deleteFileIfExists(imgFile);
             }
-            d().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":7", imgFile);
+            d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#100", ":7", imgFile);
         });
-        d().ci("toPdf_fromDir", "srcDir", srcDir, "#200");
+        d.get().ci("toPdf_fromDir", "srcDir", srcDir, "#200");
         return convertedFiles;
     }
 
     private static List<TGS_UnionExcuse<Path>> toPdf_fromDir_useImageSize(TS_FilePdfOpenPdfUtilsPageCompress.CompressionLevel cLvl, Path srcDir, float quality, boolean skipIfExists, boolean deleteIMGAfterConversion) {
-        d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#10");
+        d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#10");
         var subFiles = TS_DirectoryUtils.subFiles(srcDir, null, false, false);
-        d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#20");
+        d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#20");
         List<TGS_UnionExcuse<Path>> convertedFiles = new ArrayList();
-        d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#30");
+        d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#30");
         subFiles.stream().filter(subFile -> isSupported(subFile)).forEach(imgFile -> {
-            d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":1", imgFile);
+            d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":1", imgFile);
             var pdfFile = imgFile.resolveSibling(TS_FileUtils.getNameLabel(imgFile) + ".pdf");
-            d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":2", imgFile);
+            d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":2", imgFile);
             if (TS_FileUtils.isExistFile(pdfFile)) {
                 if (skipIfExists) {
-                    d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", "skipIfExists", imgFile);
+                    d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", "skipIfExists", imgFile);
                     return;
                 } else {
                     TS_FileUtils.deleteFileIfExists(pdfFile);
                 }
             }
-            d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":3", imgFile);
+            d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":3", imgFile);
             var u_file = toPdf_useImageSize(cLvl, pdfFile, quality, imgFile);
-            d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":4", imgFile);
+            d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":4", imgFile);
             if (u_file.isExcuse()) {
-                d().ce("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", "isExcuse", imgFile, u_file.excuse().getMessage());
+                d.get().ce("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", "isExcuse", imgFile, u_file.excuse().getMessage());
                 convertedFiles.add(u_file.toExcuse());
             } else {
-                d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":5", imgFile);
+                d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":5", imgFile);
                 convertedFiles.add(TGS_UnionExcuse.of(pdfFile));
             }
-            d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":6", imgFile);
+            d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":6", imgFile);
             if (deleteIMGAfterConversion) {
                 TS_FileUtils.deleteFileIfExists(imgFile);
             }
-            d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":7", imgFile);
+            d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#100", ":7", imgFile);
         });
-        d().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#200");
+        d.get().ci("toPdf_fromDir_useImageSize", "srcDir", srcDir, "#200");
         return convertedFiles;
     }
 }

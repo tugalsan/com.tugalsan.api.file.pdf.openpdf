@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 //https://github.com/LibrePDF/OpenPDF/wiki/Tutorial
@@ -29,13 +30,11 @@ import java.util.stream.IntStream;
 @Deprecated //TODO: Whole com.tugalsan.api.file.pdf.openpdf project will be deprecated, If I can able to migrate this class to com.tugalsan.api.file.pdf.pdfbox3.server.TS_FilePdfBox3FileCommon
 public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
 
-    private static TS_Log d() {
-        return d.orElse(TS_Log.of(TS_FilePdfOpenPdf.class));
-    }
-    final private static StableValue<TS_Log> d = StableValue.of();
+    final private static Supplier<TS_Log> d = StableValue.supplier(() -> TS_Log.of(TS_FilePdfOpenPdf.class));
+
     @Override
     public String getSuperClassName() {
-        return d().className;
+        return d.get().className;
     }
 
     public TS_FilePdfOpenPdfDriver pdfDriver;
@@ -110,15 +109,15 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
         setClosed();
-        d().ci("saveFile", "saveFile.PDF->");
+        d.get().ci("saveFile", "saveFile.PDF->");
         if (pdfDriver == null) {
-            d().ci("saveFile", "PDF File is null");
+            d.get().ci("saveFile", "PDF File is null");
         } else {
             pdfDriver.close();
             if (TS_FileUtils.isExistFile(localFile)) {
-                d().ci("saveFile", "successfull");
+                d.get().ci("saveFile", "successfull");
             } else {
-                d().ce("saveFile", "failed");
+                d.get().ce("saveFile", "failed");
             }
         }
         return errorSource == null;
@@ -137,7 +136,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("createNewPage", "createNewPage.INFO: MIFPDF.createNewPage");
+        d.get().ci("createNewPage", "createNewPage.INFO: MIFPDF.createNewPage");
         pdfDriver.createNewPage(pageSizeAX, landscape, marginLeft, marginRight, marginTop, marginBottom);
         return true;
     }
@@ -148,9 +147,9 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
 //        d.infoEnable = true;
-        d().ci("addImage", "init", pstImageLoc);
+        d.get().ci("addImage", "init", pstImageLoc);
         var result = addImagePDF(pstImage, textWrap, left0_center1_right2);
-        d().ci("addImage", "fin");
+        d.get().ci("addImage", "fin");
 //        d.infoEnable = false;
         return result;
     }
@@ -160,7 +159,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
         return TGS_FuncMTCUtils.call(() -> {
-            d().ci("addImagePDF");
+            d.get().ci("addImagePDF");
             if (pdfTable == null && pdfCell == null) {
                 switch (left0_center1_right2) {
                     case 0 ->
@@ -171,14 +170,14 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
                         pdfDriver.addImageToPageRight(pstImage, textWrap, true);
                 }
             } else if (pdfTable != null && pdfCell == null) {
-                d().ce("addImagePDF", "ERROR: cell not exits error ");
-                d().ce("addImagePDF", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
-                d().ce("addImagePDF", "compile_INSERT_IMAGE_COMMON cell not exits error ");
+                d.get().ce("addImagePDF", "ERROR: cell not exits error ");
+                d.get().ce("addImagePDF", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d.get().ce("addImagePDF", "compile_INSERT_IMAGE_COMMON cell not exits error ");
                 return false;
             } else if (pdfTable == null && pdfCell != null) {
-                d().ce("addImagePDF", "ERROR: table not exits error ");
-                d().ce("addImagePDF", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
-                d().ce("addImagePDF", "compile_INSERT_IMAGE_COMMON table not exits error ");
+                d.get().ce("addImagePDF", "ERROR: table not exits error ");
+                d.get().ce("addImagePDF", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d.get().ce("addImagePDF", "compile_INSERT_IMAGE_COMMON table not exits error ");
                 return false;
             } else if (pdfTable != null && pdfCell != null) {
                 switch (left0_center1_right2) {
@@ -190,10 +189,10 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
                         pdfDriver.addImageToCellRight(pdfCell, pstImage, textWrap, true);
                 }
             }
-            d().ci("addImagePDF", "addImagePDF is ok");
+            d.get().ci("addImagePDF", "addImagePDF is ok");
             return true;
         }, e -> {
-            d().ct("addImagePDF", e);
+            d.get().ct("addImagePDF", e);
             return false;
         });
     }
@@ -203,15 +202,15 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("beginTableCell");
+        d.get().ci("beginTableCell");
         if (pdfTable == null) {
-            d().ce("beginTableCell", "ERROR: table not exists error ");
-            d().ce("beginTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d.get().ce("beginTableCell", "ERROR: table not exists error ");
+            d.get().ce("beginTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         if (pdfCell != null) {
-            d().ce("beginTableCell", "ERROR: cell already exists error ");
-            d().ce("beginTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d.get().ce("beginTableCell", "ERROR: cell already exists error ");
+            d.get().ce("beginTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         pdfCell = new PdfPCell();
@@ -231,22 +230,22 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
         return TGS_FuncMTCUtils.call(() -> {
-            d().ci("endTableCell");
+            d.get().ci("endTableCell");
             if (pdfTable == null) {
-                d().ce("endTableCell", "ERROR: table not exists error CODE_END_TABLECELL");
-                d().ce("endTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d.get().ce("endTableCell", "ERROR: table not exists error CODE_END_TABLECELL");
+                d.get().ce("endTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
                 return false;
             }
             if (pdfCell == null) {
-                d().ce("endTableCell", "ERROR: cell not exists error CODE_END_TABLECELL");
-                d().ce("endTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d.get().ce("endTableCell", "ERROR: cell not exists error CODE_END_TABLECELL");
+                d.get().ce("endTableCell", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
                 return false;
             }
             pdfDriver.addCellToTable(pdfTable, pdfCell, rotationInDegrees_0_90_180_270);
             pdfCell = null;
             return true;
         }, e -> {
-            d().ct("endTableCell", e);
+            d.get().ct("endTableCell", e);
             return false;
         });
     }
@@ -256,10 +255,10 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("beginTable");
+        d.get().ci("beginTable");
         if (pdfTable != null) {
-            d().ce("ERROR:CODE_BEGIN_TABLE table already exists error ");
-            d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d.get().ce("ERROR:CODE_BEGIN_TABLE table already exists error ");
+            d.get().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         pdfTable = pdfDriver.createTable(relColSizes);
@@ -273,17 +272,17 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             return true;
         }
         return TGS_FuncMTCUtils.call(() -> {
-            d().ci("endTable");
+            d.get().ci("endTable");
             if (pdfTable == null) {
-                d().ce("ERROR:CODE_END_TABLE table not exists error ");
-                d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+                d.get().ce("ERROR:CODE_END_TABLE table not exists error ");
+                d.get().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
                 return false;
             }
             pdfDriver.addTableToPage(pdfTable);
             pdfTable = null;
             return true;
         }, e -> {
-            d().ct("endTable", e);
+            d.get().ct("endTable", e);
             return false;
         });
     }
@@ -293,10 +292,10 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("beginText");
+        d.get().ci("beginText");
         if (pdfParag != null) {
-            d().ce("ERROR:CODE_BEGIN_TEXT paragraph already exits error ");
-            d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d.get().ce("ERROR:CODE_BEGIN_TEXT paragraph already exits error ");
+            d.get().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         pdfParag = pdfDriver.createParagraph(pdfFont);
@@ -318,10 +317,10 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("endText");
+        d.get().ci("endText");
         if (pdfParag == null) {
-            d().ce("ERROR:paragraph not exits error ");
-            d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d.get().ce("ERROR:paragraph not exits error ");
+            d.get().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         if (pdfTable == null && pdfCell == null) {
@@ -330,18 +329,18 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
                 pdfParag = null;
                 return true;
             }, e -> {
-                d().ce("endText", e);
+                d.get().ce("endText", e);
                 return false;
             });
         }
         if (pdfTable != null && pdfCell == null) {
-            d().ce("endText", "ERROR:cell not exits error ");
-            d().ce("endText", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d.get().ce("endText", "ERROR:cell not exits error ");
+            d.get().ce("endText", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         if (pdfTable == null && pdfCell != null) {
-            d().ce("endText", "ERROR:table not exits error ");
-            d().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d.get().ce("endText", "ERROR:table not exits error ");
+            d.get().ce(TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         if (pdfTable != null && pdfCell != null) {
@@ -356,10 +355,10 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("addText", text);
+        d.get().ci("addText", text);
         if (pdfParag == null) {
-            d().ce("addText", "ERROR:paragraph not exits error ");
-            d().ce("addText", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d.get().ce("addText", "ERROR:paragraph not exits error ");
+            d.get().ce("addText", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return true;
         }
         var lines = TGS_StringUtils.jre().toList(text, "\n");
@@ -374,12 +373,12 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
     }
 
     public void addText_line(String line) {
-        d().ci("addText", "line", line);
+        d.get().ci("addText", "line", line);
         if (line.isEmpty()) {
             return;
         }
         if (!TGS_StringDouble.may(line)) {
-            d().ci("addText", "line", "addTextToParagraph", "mayNot", line);
+            d.get().ci("addText", "line", "addTextToParagraph", "mayNot", line);
             pdfDriver.addTextToParagraph(line, pdfParag, pdfFont);
             return;
         }
@@ -389,9 +388,9 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
             var dbl = TGS_StringDouble.of(line);
             if (dbl.isExcuse()) {
                 pdfDriver.addTextToParagraph(tag, pdfParag, pdfFont);
-                d().ci("addText", "line", "addTextToParagraph", "mayEmpty", line);
+                d.get().ci("addText", "line", "addTextToParagraph", "mayEmpty", line);
             } else {
-                d().ci("addText", "line", "addTextToParagraph", "mayDbl", line);
+                d.get().ci("addText", "line", "addTextToParagraph", "mayDbl", line);
                 pdfDriver.addTextToParagraph(String.valueOf(dbl.value().left), pdfParag, pdfFont);
                 pdfDriver.addTextToParagraph(String.valueOf(dbl.value().dim()) + String.valueOf(dbl.value().right), pdfParag, pdfFont_half);
             }
@@ -406,10 +405,10 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("addLineBreak");
+        d.get().ci("addLineBreak");
         if (pdfParag == null) {
-            d().ce("addLineBreak", "ERROR:paragraph not exits error ");
-            d().ce("addLineBreak", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
+            d.get().ce("addLineBreak", "ERROR:paragraph not exits error ");
+            d.get().ce("addLineBreak", TGS_StringUtils.cmn().toString_ln(fileCommonConfig.macroLineTokens));
             return false;
         }
         pdfDriver.addLineSeperatorParagraph(pdfParag);
@@ -421,7 +420,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("setFontStyle");
+        d.get().ci("setFontStyle");
 //        pdfFont = TGS_FuncEffectivelyFinal.of(Font.class).coronateAs(__ -> {
 //            var family = fontFamilyFonts_pdf.get(fileCommonConfig.fontFamilyIdx);
 //            if (fileCommonConfig.fontBold && fileCommonConfig.fontItalic) {
@@ -468,7 +467,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("setFontSize");
+        d.get().ci("setFontSize");
         return setFontStyle();
     }
 
@@ -477,7 +476,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         if (isClosed()) {
             return true;
         }
-        d().ci("setFontColor");
+        d.get().ci("setFontColor");
         if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_BLACK())) {
             pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_BLACK();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_BLUE())) {
@@ -503,7 +502,7 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_YELLOW())) {
             pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_YELLOW();
         } else {
-            d().ce("setFontColor", "ERROR: CODE_SET_FONT_COLOR code token[1] error!");
+            d.get().ce("setFontColor", "ERROR: CODE_SET_FONT_COLOR code token[1] error!");
             return false;
         }
         setFontStyle();

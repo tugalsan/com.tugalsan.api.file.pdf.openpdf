@@ -23,15 +23,13 @@ import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTU
 import java.awt.Color;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 //    private static String GOOGLEPDF () "https://docs.google.com/gview?url=";
 public class TS_FilePdfOpenPdfDriver {
 
-    private static TS_Log d() {
-        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfDriver.class));
-    }
-    final private static StableValue<TS_Log> d = StableValue.of();
+    final private static Supplier<TS_Log> d = StableValue.supplier(() -> TS_Log.of(TS_FilePdfOpenPdfDriver.class));
 
     public static Color getFONT_COLOR_BLACK() {
         return Color.BLACK;
@@ -158,7 +156,7 @@ public class TS_FilePdfOpenPdfDriver {
 
     public void createNewPage(int pageSizeAX0, boolean landscape, Integer marginLeft0, Integer marginRight0, Integer marginTop0, Integer marginBottom0) {
         TGS_FuncMTCUtils.run(() -> {
-            d().ci("createNewPage");
+            d.get().ci("createNewPage");
             var marginLeft = marginLeft0 == null ? 50 : marginLeft0;
             var marginRight = marginRight0 == null ? 10 : marginRight0;
             var marginTop = marginTop0 == null ? 10 : marginTop0;
@@ -249,7 +247,7 @@ public class TS_FilePdfOpenPdfDriver {
         var offsetY = 0;
         var c = new Chunk(image, offsetX + 0, offsetY + -h / 2, true);
         cell.setMinimumHeight(h);
-        d().ci("addImage2Cell", "image.getHeight()", h);
+        d.get().ci("addImage2Cell", "image.getHeight()", h);
         cell.addElement(c);
     }
 
@@ -260,7 +258,7 @@ public class TS_FilePdfOpenPdfDriver {
     public void addImageToPageLeft(Image image, boolean textWrap, boolean transperancyAsWhite) {
         TGS_FuncMTCUtils.run(() -> {
             if (image == null) {
-                TGS_FuncMTUUtils.thrw(d().className, "addImageToPageLeft", "image == null");
+                TGS_FuncMTUUtils.thrw(d.get().className, "addImageToPageLeft", "image == null");
                 return;
             }
             if (textWrap) {
@@ -279,7 +277,7 @@ public class TS_FilePdfOpenPdfDriver {
     public void addImageToPageRight(Image image, boolean textWrap, boolean transperancyAsWhite) {
         TGS_FuncMTCUtils.run(() -> {
             if (image == null) {
-                TGS_FuncMTUUtils.thrw(d().className, "addImageToPageRight", "image == null");
+                TGS_FuncMTUUtils.thrw(d.get().className, "addImageToPageRight", "image == null");
                 return;
             }
             if (textWrap) {
@@ -298,7 +296,7 @@ public class TS_FilePdfOpenPdfDriver {
     public void addImageToPageCenter(Image image, boolean textWrap, boolean transperancyAsWhite) {
         TGS_FuncMTCUtils.run(() -> {
             if (image == null) {
-                TGS_FuncMTUUtils.thrw(d().className, "addImageToPageCenter", "image == null");
+                TGS_FuncMTUUtils.thrw(d.get().className, "addImageToPageCenter", "image == null");
                 return;
             }
             if (textWrap) {
@@ -312,7 +310,7 @@ public class TS_FilePdfOpenPdfDriver {
 
     public void addImageToCellLeft(PdfPCell cell, java.awt.Image image, boolean textWrap, boolean transperancyAsWhite) {
         if (image == null) {
-            d().ce("addImageToCellLeft.ERROR: TKPDFDocument.addImageToCellLeft.imageAWT == null");
+            d.get().ce("addImageToCellLeft.ERROR: TKPDFDocument.addImageToCellLeft.imageAWT == null");
             return;
         }
         var i = createImage(image, transperancyAsWhite ? Color.WHITE : Color.BLACK);
@@ -326,7 +324,7 @@ public class TS_FilePdfOpenPdfDriver {
 
     public void addImageToCellRight(PdfPCell cell, java.awt.Image image, boolean textWrap, boolean transperancyAsWhite) {
         if (image == null) {
-            d().ce("addImageToCellRight.ERROR: TKPDFDocument.addImageToCellRight.imageAWT == null");
+            d.get().ce("addImageToCellRight.ERROR: TKPDFDocument.addImageToCellRight.imageAWT == null");
             return;
         }
         var i = createImage(image, transperancyAsWhite ? Color.WHITE : Color.BLACK);
@@ -340,7 +338,7 @@ public class TS_FilePdfOpenPdfDriver {
 
     public void addImageToCellCenter(PdfPCell cell, java.awt.Image image, boolean textWrap, boolean transperancyAsWhite) {
         if (image == null) {
-            d().ce("addImageToCellCenter.ERROR: TKPDFDocument.addImageToCellCenter.imageAWT == null");
+            d.get().ce("addImageToCellCenter.ERROR: TKPDFDocument.addImageToCellCenter.imageAWT == null");
             return;
         }
         var i = createImage(image, transperancyAsWhite ? Color.WHITE : Color.BLACK);
@@ -416,7 +414,7 @@ public class TS_FilePdfOpenPdfDriver {
 //            return fontAlreadyExists;
 //        }
         if (!TS_FileUtils.isExistFile(path)) {
-            d().ce("getFontFrom", "UTF8 font bold not find!", path);
+            d.get().ce("getFontFrom", "UTF8 font bold not find!", path);
             return getFontInternal(height, bold, italic, fontColor);
         }
         var newPdfFont = new Font(
@@ -505,17 +503,17 @@ public class TS_FilePdfOpenPdfDriver {
             var p = createParagraph();
             addChunkToParagraph(createChunkText("."), p);
             addParagraphToPage(p);
-        }, e -> d().ct("close.closeFix", e));
+        }, e -> d.get().ct("close.closeFix", e));
         TGS_FuncMTCUtils.run(() -> {
             if (document != null) {
                 document.close();
             }
-        }, e -> d().ct("close.document", e));
+        }, e -> d.get().ct("close.document", e));
         TGS_FuncMTCUtils.run(() -> {
             if (writer != null) {
                 writer.close();
             }
-        }, e -> d().ct("close.writer", e));
+        }, e -> d.get().ct("close.writer", e));
     }
     public boolean skipCloseFix = true;
 }

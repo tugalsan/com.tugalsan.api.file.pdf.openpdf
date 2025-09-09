@@ -13,6 +13,7 @@ import com.tugalsan.api.log.server.TS_Log;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.function.Supplier;
 
 public class TS_FilePdfOpenPdfUtilsTextExtract {
 
@@ -20,13 +21,10 @@ public class TS_FilePdfOpenPdfUtilsTextExtract {
 
     }
 
-    private static TS_Log d() {
-        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsTextExtract.class));
-    }
-    final private static StableValue<TS_Log> d = StableValue.of();
+    final private static Supplier<TS_Log> d = StableValue.supplier(() -> TS_Log.of(TS_FilePdfOpenPdfUtilsTextExtract.class));
 
     public static void test() {
-        d().cr("Text extraction");
+        d.get().cr("Text extraction");
         // step 1: create a document object
         var document = new Document();
         // step 2: write some text to the document
@@ -35,11 +33,11 @@ public class TS_FilePdfOpenPdfUtilsTextExtract {
             // step 3: extract the text
             var reader = new PdfReader(baos.toByteArray());
             var pdfTextExtractor = new PdfTextExtractor(reader);
-            d().cr("Page 1 text: " + pdfTextExtractor.getTextFromPage(1));
-            d().cr("Page 2 text: " + pdfTextExtractor.getTextFromPage(2));
-            d().cr("Page 3 table cell text: " + pdfTextExtractor.getTextFromPage(3));
+            d.get().cr("Page 1 text: " + pdfTextExtractor.getTextFromPage(1));
+            d.get().cr("Page 2 text: " + pdfTextExtractor.getTextFromPage(2));
+            d.get().cr("Page 3 table cell text: " + pdfTextExtractor.getTextFromPage(3));
         } catch (DocumentException | IOException de) {
-            d().ce(de.getMessage());
+            d.get().ce(de.getMessage());
         }
     }
 
@@ -64,7 +62,7 @@ public class TS_FilePdfOpenPdfUtilsTextExtract {
                 fos.write(baos.toByteArray());
             }
         } catch (DocumentException | IOException de) {
-            d().ce(de.getMessage());
+            d.get().ce(de.getMessage());
         }
         return baos;
     }

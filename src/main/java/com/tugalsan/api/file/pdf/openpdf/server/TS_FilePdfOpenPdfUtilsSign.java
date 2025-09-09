@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class TS_FilePdfOpenPdfUtilsSign {
 
@@ -32,10 +33,7 @@ public class TS_FilePdfOpenPdfUtilsSign {
 
     }
 
-    private static TS_Log d() {
-        return d.orElse(TS_Log.of(TS_FilePdfOpenPdfUtilsSign.class));
-    }
-    final private static StableValue<TS_Log> d = StableValue.of();
+    final private static Supplier<TS_Log> d = StableValue.supplier(() -> TS_Log.of(TS_FilePdfOpenPdfUtilsSign.class));
 
     public static void test() {
         try {
@@ -44,7 +42,7 @@ public class TS_FilePdfOpenPdfUtilsSign {
             extractVerifiedCryptoSignature();
 
         } catch (DocumentException e) {
-            d().ce("test", e.getMessage());
+            d.get().ce("test", e.getMessage());
         }
     }
 
@@ -52,7 +50,7 @@ public class TS_FilePdfOpenPdfUtilsSign {
         try {
             String visibility = visible ? "visible" : "invisible";
             String description = "Document with " + visibility + " signature";
-            d().cr("addUnverifiedSignature", description);
+            d.get().cr("addUnverifiedSignature", description);
 
             var document = new Document();
             var baos = new ByteArrayOutputStream();
@@ -107,13 +105,13 @@ public class TS_FilePdfOpenPdfUtilsSign {
                 printSignatureDetails(fields, signature);
             }
         } catch (DocumentException | IOException e) {
-            d().ce("addUnverifiedSignature", e.getMessage());
+            d.get().ce("addUnverifiedSignature", e.getMessage());
         }
     }
 
     private static void extractVerifiedCryptoSignature() {
 
-        d().cr("extractVerifiedCryptoSignature", "Signature extraction");
+        d.get().cr("extractVerifiedCryptoSignature", "Signature extraction");
 
         PdfPKCS7.loadCacertsKeyStore();
 
@@ -130,21 +128,21 @@ public class TS_FilePdfOpenPdfUtilsSign {
 
                 var certificate = pk.getSigningCertificate();
                 var subjectFields = PdfPKCS7.getSubjectFields(certificate);
-                d().cr("extractVerifiedCryptoSignature", "Certificate subject fields: " + subjectFields);
-                d().cr("extractVerifiedCryptoSignature", "Certificate verified: " + pk.verify());
+                d.get().cr("extractVerifiedCryptoSignature", "Certificate subject fields: " + subjectFields);
+                d.get().cr("extractVerifiedCryptoSignature", "Certificate verified: " + pk.verify());
 
                 var sdf = new SimpleDateFormat("yyyy-MM-dd");
-                d().cr("extractVerifiedCryptoSignature", "Date signed: " + sdf.format(pk.getSignDate().getTime()));
-                d().cr("extractVerifiedCryptoSignature", "Timestamp verified: " + pk.verifyTimestampImprint());
+                d.get().cr("extractVerifiedCryptoSignature", "Date signed: " + sdf.format(pk.getSignDate().getTime()));
+                d.get().cr("extractVerifiedCryptoSignature", "Timestamp verified: " + pk.verifyTimestampImprint());
             }
         } catch (SignatureException | IOException | NoSuchAlgorithmException e) {
-            d().ce(e.getMessage());
+            d.get().ce(e.getMessage());
         }
     }
 
     private static void printSignatureDetails(AcroFields fields, String signature) {
-        d().cr("printSignatureDetails", "Signature: " + signature);
-        d().cr("printSignatureDetails", "Signature covers whole document: " + fields.signatureCoversWholeDocument(signature));
-        d().cr("printSignatureDetails", "Revision: " + fields.getRevision(signature));
+        d.get().cr("printSignatureDetails", "Signature: " + signature);
+        d.get().cr("printSignatureDetails", "Signature covers whole document: " + fields.signatureCoversWholeDocument(signature));
+        d.get().cr("printSignatureDetails", "Revision: " + fields.getRevision(signature));
     }
 }
