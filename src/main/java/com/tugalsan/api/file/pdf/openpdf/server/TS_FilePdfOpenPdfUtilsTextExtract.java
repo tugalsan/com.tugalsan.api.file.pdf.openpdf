@@ -13,7 +13,6 @@ import com.tugalsan.api.log.server.TS_Log;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.function.Supplier;
 
 public class TS_FilePdfOpenPdfUtilsTextExtract {
 
@@ -21,10 +20,10 @@ public class TS_FilePdfOpenPdfUtilsTextExtract {
 
     }
 
-    final private static Supplier<TS_Log> d = StableValue.supplier(() -> TS_Log.of(TS_FilePdfOpenPdfUtilsTextExtract.class));
+    final private static TS_Log d = TS_Log.of(TS_FilePdfOpenPdfUtilsTextExtract.class);
 
     public static void test() {
-        d.get().cr("Text extraction");
+        d.cr("Text extraction");
         // step 1: create a document object
         var document = new Document();
         // step 2: write some text to the document
@@ -33,11 +32,11 @@ public class TS_FilePdfOpenPdfUtilsTextExtract {
             // step 3: extract the text
             var reader = new PdfReader(baos.toByteArray());
             var pdfTextExtractor = new PdfTextExtractor(reader);
-            d.get().cr("Page 1 text: " + pdfTextExtractor.getTextFromPage(1));
-            d.get().cr("Page 2 text: " + pdfTextExtractor.getTextFromPage(2));
-            d.get().cr("Page 3 table cell text: " + pdfTextExtractor.getTextFromPage(3));
+            d.cr("Page 1 text: " + pdfTextExtractor.getTextFromPage(1));
+            d.cr("Page 2 text: " + pdfTextExtractor.getTextFromPage(2));
+            d.cr("Page 3 table cell text: " + pdfTextExtractor.getTextFromPage(3));
         } catch (DocumentException | IOException de) {
-            d.get().ce(de.getMessage());
+            d.ce(de.getMessage());
         }
     }
 
@@ -62,7 +61,7 @@ public class TS_FilePdfOpenPdfUtilsTextExtract {
                 fos.write(baos.toByteArray());
             }
         } catch (DocumentException | IOException de) {
-            d.get().ce(de.getMessage());
+            d.ce(de.getMessage());
         }
         return baos;
     }
