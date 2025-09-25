@@ -1,17 +1,10 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
+import module com.tugalsan.api.function;
+import module com.tugalsan.api.log;
+import module com.github.librepdf.openpdf;
 import com.lowagie.text.PageSize;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.error_messages.MessageLocalization;
-import com.lowagie.text.pdf.PdfImportedPage;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfWriter;
-import com.tugalsan.api.function.client.TGS_FuncUtils;
-import com.tugalsan.api.log.server.TS_Log;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class TS_FilePdfOpenPdfUtilsPageHandout {
 

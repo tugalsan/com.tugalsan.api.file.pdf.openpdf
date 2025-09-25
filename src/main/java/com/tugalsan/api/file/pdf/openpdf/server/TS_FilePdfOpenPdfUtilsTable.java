@@ -1,16 +1,9 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.FontFactory;
+import module com.tugalsan.api.log;
+import module com.github.librepdf.openpdf;
 import com.lowagie.text.PageSize;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.tugalsan.api.log.server.TS_Log;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class TS_FilePdfOpenPdfUtilsTable {
 

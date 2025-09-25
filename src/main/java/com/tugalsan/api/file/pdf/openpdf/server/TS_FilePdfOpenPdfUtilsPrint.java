@@ -1,12 +1,12 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.tugalsan.api.os.server.TS_OsPlatformUtils;
-import java.io.IOException;
+import module com.tugalsan.api.os;
+import java.io.*;
 
 public class TS_FilePdfOpenPdfUtilsPrint {
-    
-    private TS_FilePdfOpenPdfUtilsPrint(){
-        
+
+    private TS_FilePdfOpenPdfUtilsPrint() {
+
     }
 
     private static String acroread = null;

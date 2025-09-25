@@ -1,15 +1,10 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.pdf.PdfDate;
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfString;
-import com.lowagie.text.pdf.PdfWriter;
-import com.tugalsan.api.time.client.TGS_Time;
-import com.tugalsan.api.time.server.TS_TimeUtils;
-import com.tugalsan.api.union.client.TGS_UnionExcuse;
-import java.nio.file.Path;
-import java.util.Map;
+import module com.github.librepdf.openpdf;
+import module com.tugalsan.api.time;
+import module com.tugalsan.api.union;
+import java.nio.file.*;
+import java.util.*;
 
 public class TS_FilePdfOpenPdfUtilsInfo {
 

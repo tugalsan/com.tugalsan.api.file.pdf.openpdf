@@ -1,29 +1,19 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.Chunk;
+import module java.desktop;
+import module com.github.librepdf.openpdf;
+import module com.tugalsan.api.charset;
+import module com.tugalsan.api.file;
+import module com.tugalsan.api.log;
+import module com.tugalsan.api.function;
 import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.tugalsan.api.charset.client.TGS_CharSet;
-import com.tugalsan.api.file.server.TS_FileUtils;
-import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTUEffectivelyFinal;
-import com.tugalsan.api.log.server.TS_Log;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTUUtils;
-import java.awt.Color;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.stream.IntStream;
+import java.nio.file.*;
+import java.util.stream.*;
 
 //    private static String GOOGLEPDF () "https://docs.google.com/gview?url=";
 public class TS_FilePdfOpenPdfDriver {

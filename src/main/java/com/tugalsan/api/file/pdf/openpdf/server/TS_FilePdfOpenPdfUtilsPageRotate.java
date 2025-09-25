@@ -1,12 +1,10 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfNumber;
-import com.lowagie.text.pdf.PdfStamper;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import java.io.FileOutputStream;
-import java.nio.file.Path;
-import java.util.stream.IntStream;
+import module com.tugalsan.api.function;
+import module com.github.librepdf.openpdf;
+import java.io.*;
+import java.nio.file.*;
+import java.util.stream.*;
 
 public class TS_FilePdfOpenPdfUtilsPageRotate {
 

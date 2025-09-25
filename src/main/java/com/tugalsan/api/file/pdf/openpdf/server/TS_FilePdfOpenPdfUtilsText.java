@@ -1,15 +1,8 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfWriter;
-import java.io.FileOutputStream;
-import com.tugalsan.api.log.server.TS_Log;
-import java.io.IOException;
+import module com.tugalsan.api.log;
+import module com.github.librepdf.openpdf;
+import java.io.*;
 
 public class TS_FilePdfOpenPdfUtilsText {
 

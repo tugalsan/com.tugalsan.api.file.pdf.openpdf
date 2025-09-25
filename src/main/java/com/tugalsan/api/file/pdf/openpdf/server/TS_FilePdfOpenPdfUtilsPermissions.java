@@ -1,13 +1,10 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.pdf.PdfEncryptor;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfWriter;
-import com.tugalsan.api.function.client.TGS_FuncUtils;
-import com.tugalsan.api.log.server.TS_Log;
-import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.Map;
+import module com.tugalsan.api.function;
+import module com.tugalsan.api.log;
+import module com.github.librepdf.openpdf;
+import java.io.*;
+import java.util.*;
 
 public class TS_FilePdfOpenPdfUtilsPermissions {
 

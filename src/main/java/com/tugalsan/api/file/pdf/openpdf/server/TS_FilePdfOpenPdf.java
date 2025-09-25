@@ -1,28 +1,20 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
+import module com.tugalsan.api.log;
+import module com.tugalsan.api.file.common;
+import module com.tugalsan.api.file;
+import module com.tugalsan.api.string;
+import module com.tugalsan.api.function;
+import module com.tugalsan.api.url;
+import module java.desktop;
+import module com.github.librepdf.openpdf;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
-import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.tugalsan.api.log.server.TS_Log;
-import java.nio.file.Path;
-import com.tugalsan.api.file.common.server.TS_FileCommonAbstract;
-import com.tugalsan.api.file.common.server.TS_FileCommonConfig;
-import com.tugalsan.api.file.common.server.TS_FileCommonFontTags;
-import com.tugalsan.api.file.server.TS_FileUtils;
-import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTU_In1;
-import com.tugalsan.api.string.client.TGS_StringDouble;
-import com.tugalsan.api.string.client.TGS_StringUtils;
-import com.tugalsan.api.function.client.TGS_FuncUtils;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import com.tugalsan.api.url.client.TGS_Url;
-import java.awt.Color;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.util.Objects;
-import java.util.stream.IntStream;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.*;
 
 //https://github.com/LibrePDF/OpenPDF/wiki/Tutorial
 //https://web.archive.org/web/20090703162811/http://itextdocs.lowagie.com/tutorial/

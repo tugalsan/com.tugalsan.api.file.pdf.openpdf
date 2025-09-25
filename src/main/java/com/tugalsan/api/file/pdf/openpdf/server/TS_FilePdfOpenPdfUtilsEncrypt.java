@@ -1,6 +1,6 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.pdf.PdfReader;
+import module com.github.librepdf.openpdf;
 
 public class TS_FilePdfOpenPdfUtilsEncrypt {
 

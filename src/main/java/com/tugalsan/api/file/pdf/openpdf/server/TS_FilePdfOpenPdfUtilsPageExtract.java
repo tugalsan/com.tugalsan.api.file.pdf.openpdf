@@ -1,10 +1,9 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
+import module com.tugalsan.api.union;
+import module com.tugalsan.api.function;
+import java.nio.file.*;
+import java.util.*;
 import java.util.List;
 
 public class TS_FilePdfOpenPdfUtilsPageExtract {

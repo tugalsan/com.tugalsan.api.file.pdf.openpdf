@@ -1,9 +1,9 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.Paragraph;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import java.nio.file.Path;
-import java.util.stream.IntStream;
+import module com.tugalsan.api.function;
+import module com.github.librepdf.openpdf;
+import java.nio.file.*;
+import java.util.stream.*;
 
 public class TS_FilePdfOpenPdfUtilsPageHeader {
 

@@ -1,25 +1,20 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
+import module com.tugalsan.api.charset;
+import module com.tugalsan.api.file.img;
+import module com.tugalsan.api.file;
+import module com.tugalsan.api.log;
+import module com.tugalsan.api.shape;
+import module com.tugalsan.api.union;
+import module com.tugalsan.api.function;
+import module java.desktop;
+import module com.github.librepdf.openpdf;
 import com.lowagie.text.Document;
 import com.lowagie.text.Image;
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfString;
-import com.lowagie.text.pdf.PdfWriter;
-import com.tugalsan.api.charset.client.TGS_CharSetCast;
-import com.tugalsan.api.file.img.server.TS_FileImageUtils;
-import com.tugalsan.api.file.server.TS_DirectoryUtils;
-import com.tugalsan.api.file.server.TS_FileUtils;
-import com.tugalsan.api.log.server.TS_Log;
-import com.tugalsan.api.shape.client.TGS_ShapeDimension;
-import com.tugalsan.api.union.client.TGS_UnionExcuse;
-import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import java.awt.image.BufferedImage;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
+import java.nio.file.*;
+import java.util.*;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.*;
 
 public class TS_FilePdfOpenPdfUtilsImage {
 

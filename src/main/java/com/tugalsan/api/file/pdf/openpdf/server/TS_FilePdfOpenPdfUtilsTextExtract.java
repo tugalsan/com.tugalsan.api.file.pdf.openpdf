@@ -1,18 +1,8 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfString;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.parser.PdfTextExtractor;
-import com.tugalsan.api.log.server.TS_Log;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import module com.github.librepdf.openpdf;
+import module com.tugalsan.api.log;
+import java.io.*;
 
 public class TS_FilePdfOpenPdfUtilsTextExtract {
 

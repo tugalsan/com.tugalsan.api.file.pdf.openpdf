@@ -1,30 +1,12 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.PdfDate;
-import com.lowagie.text.pdf.PdfDictionary;
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfPKCS7;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
-import com.lowagie.text.pdf.PdfString;
-import com.lowagie.text.pdf.PdfWriter;
-import com.tugalsan.api.log.server.TS_Log;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
+import module com.github.librepdf.openpdf;
+import module com.tugalsan.api.log;
+import java.io.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class TS_FilePdfOpenPdfUtilsSign {
 

@@ -1,11 +1,10 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import org.jsoup.Jsoup;
-import org.xhtmlrenderer.pdf.ITextRenderer;
+import module com.tugalsan.api.union;
+import module com.tugalsan.api.function;
+import module org.jsoup;
+import module flying.saucer.pdf;
+import java.nio.file.*;
 
 @Deprecated //HOW about using com.tugalsan.api.file.pdf.pdfbox3.server.TS_FilePdfBox3UtilsHtml.toPdf(Path srcHTM, Path dstPDF)
 public class TS_FilePdfOpenPdfUtilsHtml {

@@ -1,17 +1,14 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.pdf.PdfCopy;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.SimpleBookmark;
-import com.tugalsan.api.thread.server.sync.TS_ThreadSyncLst;
-import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTUUtils;
-import java.nio.file.Path;
+import module com.tugalsan.api.thread;
+import module com.tugalsan.api.union;
+import module com.tugalsan.api.function;
+import module com.github.librepdf.openpdf;
+import java.nio.file.*;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
+import java.util.*;
+import java.util.concurrent.atomic.*;
+import java.util.stream.*;
 
 public class TS_FilePdfOpenPdfUtilsPageMerge {
 

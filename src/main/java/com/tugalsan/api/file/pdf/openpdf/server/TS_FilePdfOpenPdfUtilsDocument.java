@@ -1,5 +1,8 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
+import module com.tugalsan.api.union;
+import module com.tugalsan.api.function;
+import com.tugalsan.api.file.pdf.openpdf.server.TS_FilePdfOpenPdfUtilsPage.PageInfo;
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfCopy;
 import com.lowagie.text.pdf.PdfName;
@@ -7,15 +10,8 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfString;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.RandomAccessFileOrArray;
-import com.tugalsan.api.file.pdf.openpdf.server.TS_FilePdfOpenPdfUtilsPage.PageInfo;
-import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTU_In2;
-import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTU_OutTyped_In2;
-import com.tugalsan.api.union.client.TGS_UnionExcuse;
-import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import java.io.BufferedOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.*;
+import java.nio.file.*;
 
 public class TS_FilePdfOpenPdfUtilsDocument {
 

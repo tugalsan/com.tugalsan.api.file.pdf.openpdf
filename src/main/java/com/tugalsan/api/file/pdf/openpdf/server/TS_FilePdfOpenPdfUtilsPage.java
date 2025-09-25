@@ -1,12 +1,9 @@
 package com.tugalsan.api.file.pdf.openpdf.server;
 
-import com.lowagie.text.Document;
+import module com.github.librepdf.openpdf;
+import module com.tugalsan.api.union;
 import com.lowagie.text.PageSize;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfDictionary;
-import com.lowagie.text.pdf.PdfReader;
-import com.tugalsan.api.union.client.TGS_UnionExcuse;
-import java.nio.file.Path;
+import java.nio.file.*;
 
 public class TS_FilePdfOpenPdfUtilsPage {
 
