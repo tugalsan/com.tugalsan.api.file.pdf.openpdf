@@ -24,6 +24,10 @@ public class TS_FilePdfOpenPdfDriver {
         return Color.BLACK;
     }
 
+    public static Color getFONT_COLOR_WHITE() {
+        return Color.WHITE;
+    }
+
     public static Color getFONT_COLOR_BLUE() {
         return Color.BLUE;
     }

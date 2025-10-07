@@ -470,6 +470,8 @@ public class TS_FilePdfOpenPdf extends TS_FileCommonAbstract {
         d.ci("setFontColor");
         if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_BLACK())) {
             pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_BLACK();
+        } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_WHITE())) {
+            pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_WHITE();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_BLUE())) {
             pdfFontColor = TS_FilePdfOpenPdfDriver.getFONT_COLOR_BLUE();
         } else if (Objects.equals(fileCommonConfig.fontColor, TS_FileCommonFontTags.CODE_TOKEN_FONT_COLOR_CYAN())) {
